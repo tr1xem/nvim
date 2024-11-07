@@ -1,6 +1,6 @@
-require("theprimeagen.set")
-require("theprimeagen.remap")
-require("theprimeagen.lazy_init")
+require("plugins.set")
+require("plugins.remap")
+require("plugins.lazy_init")
 require('lualine').setup()
 require("startup").setup({theme = "evil"}) -- put theme name here
 -- DO.not
