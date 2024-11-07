@@ -10,10 +10,12 @@ return {
 
     {
         "erikbackman/brightburn.vim",
+        lazy = true,
     },
 
     {
         "folke/tokyonight.nvim",
+        name = "tokyonight",
         lazy = false,
         opts = {},
         config = function()
@@ -23,8 +25,10 @@ return {
     {
         "ellisonleao/gruvbox.nvim",
         name = "gruvbox",
+        lazy=true,
         config = function()
             require("gruvbox").setup({
+                style = "moon",
                 terminal_colors = true, -- add neovim terminal colors
                 undercurl = true,
                 underline = false,
@@ -74,10 +78,11 @@ return {
 
     {
         "rose-pine/neovim",
+        lazy=true,
         name = "rose-pine",
         config = function()
             require('rose-pine').setup({
-                disable_background = true,
+                disable_background = false,
                 styles = {
                     italic = false,
                 },

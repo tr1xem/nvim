@@ -1,8 +1,7 @@
-
 local local_plugins = {
     {
-        "harpoon",
-        dir = "~/personal/harpoon",
+        "theprimeagen/harpoon",  -- Update to the online repository
+        lazy = true,
         config = function()
             local harpoon = require("harpoon")
 
@@ -11,30 +10,15 @@ local local_plugins = {
             vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
             vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
-            vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
-            vim.keymap.set("n", "<C-j>", function() harpoon:list():select(2) end)
-            vim.keymap.set("n", "<C-k>", function() harpoon:list():select(3) end)
-            vim.keymap.set("n", "<C-l>", function() harpoon:list():select(4) end)
+            vim.keymap.set("n", "<C-M-h>", function() harpoon:list():select(1) end)
+            vim.keymap.set("n", "<C-M-j>", function() harpoon:list():select(2) end)
+            vim.keymap.set("n", "<C-M-k>", function() harpoon:list():select(3) end)
+            vim.keymap.set("n", "<C-M-l>", function() harpoon:list():select(4) end)
             vim.keymap.set("n", "<leader><C-h>", function() harpoon:list():replace_at(1) end)
             vim.keymap.set("n", "<leader><C-j>", function() harpoon:list():replace_at(2) end)
             vim.keymap.set("n", "<leader><C-k>", function() harpoon:list():replace_at(3) end)
             vim.keymap.set("n", "<leader><C-l>", function() harpoon:list():replace_at(4) end)
         end
-    },
-    {
-        "vim-apm", dir = "~/personal/vim-apm",
-        config = function()
-            --[[
-            local apm = require("vim-apm")
-
-            apm:setup({})
-            vim.keymap.set("n", "<leader>apm", function() apm:toggle_monitor() end)
-            --]]
-        end
-    },
-    {
-        "vim-with-me", dir = "~/personal/vim-with-me",
-        config = function() end
     },
 }
 
