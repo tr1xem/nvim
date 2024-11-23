@@ -13,9 +13,10 @@ require("startup").setup({theme = "evil"}) -- put theme name here
 
 -- DO NOT INCLUDE THIS
 -- DO.not
+vim.opt.colorcolumn = ""
 
 local augroup = vim.api.nvim_create_augroup
-local ThePrimeagenGroup = augroup('ThePrimeagen', {})
+local trixgroup = augroup('trixgroup', {})
 
 local autocmd = vim.api.nvim_create_autocmd
 local yank_group = augroup('HighlightYank', {})
@@ -45,13 +46,13 @@ local lspconfig = require('lspconfig')
 local on_attach = function()
 end
 autocmd({"BufWritePre"}, {
-    group = ThePrimeagenGroup,
+    group = trixgroup,
     pattern = "*",
     command = [[%s/\s\+$//e]],
 })
 
 autocmd('LspAttach', {
-    group = ThePrimeagenGroup,
+    group = trixgroup,
     callback = function(e)
         local opts = { buffer = e.buf }
         require("clangd_extensions.inlay_hints").setup_autocmd()
