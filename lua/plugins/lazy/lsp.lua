@@ -22,7 +22,7 @@ return {
             {},
             vim.lsp.protocol.make_client_capabilities(),
             cmp_lsp.default_capabilities())
-
+        -- cmp.lua
         require 'cmp'.setup {
             sources = {
                 { name = 'nvim_lsp_signature_help' },
@@ -93,11 +93,12 @@ return {
 
             }),
             sources = cmp.config.sources({
-                { name = 'nvim_lsp' },
-                { name = 'luasnip' }, -- For luasnip users.
+                { name = "copilot",   group_index = 2 },
+                { name = 'nvim_lsp',  group_index = 2 },
+                { name = 'path',      group_index = 2 },
+                { name = 'buffer',    group_index = 2 },
+                { name = 'luasnip',   group_index = 2 }, -- For luasnip users.
             }, {
-                { name = 'path' },
-                { name = 'buffer' },
             })
         })
 
@@ -114,4 +115,3 @@ return {
         })
     end
 }
-
