@@ -28,7 +28,7 @@ cmp.setup({
         ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),   -- Next item
         ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),   -- Previous item
 
-        ["<Tab>"] = vim.schedule_wrap(function(fallback)
+        ["<C-y>"] = vim.schedule_wrap(function(fallback)
             if cmp.visible() and has_words_before() then
                 cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
             else
@@ -47,14 +47,6 @@ cmp.setup({
         ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }), -- Scroll up
         ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),  -- Scroll down
 
-        -- Fallback for `<S-Tab>` for navigating backward
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-            if cmp.visible() then
-                cmp.select_prev_item()
-            else
-                fallback()
-            end
-        end, { "i", "s" }),
     },
 })
 
@@ -134,4 +126,4 @@ autocmd('LspAttach', {
 vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
-vim.cmd [[colorscheme tokyonight]]
+vim.cmd [[colorscheme rose-pine-moon]]
