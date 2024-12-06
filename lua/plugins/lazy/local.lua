@@ -9,9 +9,10 @@ local local_plugins = {
 
             harpoon:setup()
             vim.keymap.set('', '<C-e>', '<Nop>', { noremap = true, silent = true })
+            vim.keymap.set('', '<leader>a', '<Nop>', { noremap = true, silent = true })
 
-            vim.keymap.set("n", "<C-e>", function() harpoon:list():add() end)
-            vim.keymap.set("n", "<C-h>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+            vim.keymap.set("n", "<leader>a", function() harpoon:list():add() end)
+            vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
             vim.keymap.set("n", "<C-M-h>", function() harpoon:list():select(1) end)
             vim.keymap.set("n", "<C-M-j>", function() harpoon:list():select(2) end)
