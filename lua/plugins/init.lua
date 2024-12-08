@@ -90,9 +90,6 @@ autocmd('TextYankPost', {
     end,
 })
 
-local lspconfig = require('lspconfig')
-local on_attach = function()
-end
 autocmd({ "BufWritePre" }, {
     group = trixgroup,
     pattern = "*",
@@ -117,13 +114,3 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
     end
 })
--- require'lspconfig'.clangd.setup{
---     init_options = {
---         compilationDatabasePath = "./../build"  -- Adjust this path to your build directory
---
---     }
--- }
-vim.g.netrw_browse_split = 0
-vim.g.netrw_banner = 0
-vim.g.netrw_winsize = 25
-vim.cmd [[colorscheme rose-pine-moon]]
