@@ -2,7 +2,7 @@ require("plugins.set")
 require("plugins.remap")
 require("plugins.lazy_init")
 require('lualine').setup()
-require("startup").setup({ theme = "evil" }) -- put theme name here
+-- require("startup").setup({ theme = "evil" }) -- put theme name here
 
 local cmp = require('cmp')
 local has_words_before = function()
@@ -114,3 +114,4 @@ autocmd('LspAttach', {
         vim.keymap.set("n", "]d", function() vim.diagnostic.goto_prev() end, opts)
     end
 })
+vim.cmd [[colorscheme rose-pine-moon]]
