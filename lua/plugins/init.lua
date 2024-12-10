@@ -2,7 +2,6 @@ require("plugins.set")
 require("plugins.remap")
 require("plugins.lazy_init")
 require('lualine').setup()
--- require("startup").setup({ theme = "evil" }) -- put theme name here
 
 local cmp = require('cmp')
 local has_words_before = function()
@@ -23,31 +22,25 @@ cmp.setup {
         })
     }
 }
-cmp.setup({
-    mapping = {
-        ["<C-j>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),   -- Next item
-        ["<C-k>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),   -- Previous item
+-- Function to check file size
+local function is_large_file(bufnr)
+    bufnr = bufnr or vim.api.nvim_get_current_buf()
+    local max_size = 500 * 1024 -- 500 KB limit
+    local file_size = vim.fn.getfsize(vim.api.nvim_buf_get_name(bufnr))
+    return file_size > max_size
+end
 
-        ["<C-y>"] = vim.schedule_wrap(function(fallback)
-            if cmp.visible() and has_words_before() then
-                cmp.confirm({ behavior = cmp.ConfirmBehavior.Insert, select = true })
-            else
-                fallback()
-            end
-        end, { "i", "s" }),
-        ["<C-e>"] = cmp.mapping({
-            i = cmp.mapping.abort(), -- Close menu in insert mode
-            c = cmp.mapping.close(), -- Close menu in command-line mode
-        }),
-
-        -- Open the completion menu manually
-        ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-
-        -- Scroll through documentation (if available)
-        ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }), -- Scroll up
-        ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),  -- Scroll down
-
-    },
+-- Disable LSP and Tree-sitter for large files
+vim.api.nvim_create_autocmd("BufReadPre", {
+    callback = function(args)
+        if is_large_file(args.buf) then
+            vim.b.large_file = true
+            -- Disable Tree-sitter
+            vim.treesitter.disable()
+            -- Disable LSP
+            vim.lsp.stop_client(vim.lsp.get_active_clients())
+        end
+    end,
 })
 
 

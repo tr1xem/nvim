@@ -90,13 +90,17 @@ return {
                 ["<C-Space>"] = cmp.mapping.complete(),
                 ['<C-e>'] = cmp.mapping.close(),
 
+                -- Scroll through documentation (if available)
+                ["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }), -- Scroll up
+                ["<C-f>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }), -- Scroll down
+
             }),
             sources = cmp.config.sources({
-                { name = "copilot",   group_index = 2 },
-                { name = 'nvim_lsp',  group_index = 2 },
-                { name = 'path',      group_index = 2 },
-                { name = 'buffer',    group_index = 2 },
-                { name = 'luasnip',   group_index = 2 }, -- For luasnip users.
+                { name = "copilot",  group_index = 2 },
+                { name = 'nvim_lsp', group_index = 2 },
+                { name = 'path',     group_index = 2 },
+                { name = 'buffer',   group_index = 2 },
+                { name = 'luasnip',  group_index = 2 },  -- For luasnip users.
             }, {
             })
         })
