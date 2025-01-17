@@ -33,7 +33,7 @@ return { {
         vim.keymap.set('n', '<leader>b', function()
             builtin.buffers({ sort_mru = true, ignore_current_buffer = true })
         end)
-        vim.keymap.set({ 'n', 'v', 'i' }, '<leader>sr', require('telescope.builtin').lsp_references,
+        vim.keymap.set({ 'n', 'v' }, '<leader>sr', require('telescope.builtin').lsp_references,
             { silent = true, noremap = true })
         vim.keymap.set("n", "<space›en", function()
             require(' telescope.builtin').find_files {
