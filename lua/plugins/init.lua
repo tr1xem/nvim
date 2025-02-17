@@ -18,27 +18,6 @@ cmp.setup {
         })
     }
 }
--- Function to check file size
-local function is_large_file(bufnr)
-    bufnr = bufnr or vim.api.nvim_get_current_buf()
-    local max_size = 500 * 1024 -- 500 KB limit
-    local file_size = vim.fn.getfsize(vim.api.nvim_buf_get_name(bufnr))
-    return file_size > max_size
-end
-
--- Disable LSP and Tree-sitter for large files
-vim.api.nvim_create_autocmd("BufReadPre", {
-    callback = function(args)
-        if is_large_file(args.buf) then
-            vim.b.large_file = true
-            -- Disable Tree-sitter
-            vim.treesitter.disable()
-            -- Disable LSP
-            vim.lsp.stop_client(vim.lsp.get_active_clients())
-        end
-    end,
-})
-
 
 -- DO.not
 -- DO NOT INCLUDE THIS
@@ -89,8 +68,8 @@ autocmd('LspAttach', {
     group = trixgroup,
     callback = function(e)
         local opts = { buffer = e.buf }
-        require("clangd_extensions.inlay_hints").setup_autocmd()
-        require("clangd_extensions.inlay_hints").set_inlay_hints()
+        -- require("clangd_extensions.inlay_hints").setup_autocmd()
+        -- require("clangd_extensions.inlay_hints").set_inlay_hints()
         vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
         vim.keymap.set("n", "K", function() vim.lsp.buf.hover() end, opts)
         vim.keymap.set("n", "<leader>vws", function() vim.lsp.buf.workspace_symbol() end, opts)
@@ -104,7 +83,6 @@ autocmd('LspAttach', {
     end
 })
 
-vim.cmd [[colorscheme rose-pine-moon]]
 vim.api.nvim_create_autocmd('TermOpen', {
     group = vim.api.nvim_create_augroup('custom-term-open', { clear = true }),
     callback = function()
@@ -118,3 +96,28 @@ vim.keymap.set("n", '<leader>st', function()
     vim.cmd.wincmd('J')
     vim.api.nvim_win_set_height(0, 15)
 end)
+
+local lualine = require('lualine')
+lualine.setup {
+    options = {
+        theme = 'pywal16-nvim',
+    },
+}
+vim.cmd.colorscheme("tokyonight")
+
+require('cord').setup {
+    display = {
+
+    },
+    buttons = {
+  {
+    label = function(opts)
+      return opts.repo_url and 'View Repository'
+    end;
+    url = function(opts)
+      return opts.repo_url
+    end
+  }
+}
+}
+-- vim.cmd [[colorscheme tokyonight]]
