@@ -1,6 +1,6 @@
 return {
     "laytan/cloak.nvim",
-    lazy = true,
+    verylazy = true,
     config = function()
         require("cloak").setup({
             enabled = true,
