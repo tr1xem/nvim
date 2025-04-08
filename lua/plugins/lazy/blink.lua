@@ -22,7 +22,7 @@ return {
 				nerd_font_variant = "mono",
 			},
 			sources = {
-				default = { "avante", "path", "lsp", "snippets", "buffer" },
+				default = { "avante", "path", "snippets", "lsp", "buffer" },
 				providers = {
 					path = { score_offset = 100 },
 					lsp = { score_offset = 90 },
