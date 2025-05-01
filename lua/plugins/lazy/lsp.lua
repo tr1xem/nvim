@@ -5,13 +5,6 @@ return {
 			"stevearc/conform.nvim",
 			"williamboman/mason.nvim",
 			"williamboman/mason-lspconfig.nvim",
-			-- "hrsh7th/cmp-nvim-lsp",
-			-- "hrsh7th/cmp-buffer",
-			-- "hrsh7th/cmp-path",
-			-- "hrsh7th/cmp-cmdline",
-			-- "hrsh7th/nvim-cmp",
-			-- "L3MON4D3/LuaSnip",
-			-- "saadparwaiz1/cmp_luasnip",
 			"j-hui/fidget.nvim",
 		},
 
@@ -19,14 +12,12 @@ return {
 			require("conform").setup({
 				formatters_by_ft = {
 					lua = { "stylua" },
-					-- Conform will run multiple formatters sequentially
-					python = { "ruff", "black" },
-					-- You can customize some of the format options for the filetype (:help conform.format)
+					python = { "black", "ruff" },
 					rust = { "rustfmt", lsp_format = "fallback" },
-					-- Conform will run the first available formatter
 					json = { "clang-format", "json_tool" },
 					cpp = { "clang-format" },
 					javascript = { "prettierd", "prettier", stop_after_first = true },
+					typescript = { "prettierd", "prettier", stop_after_first = true },
 				},
 			})
 			-- local cmp_lsp = require("cmp_nvim_lsp")
@@ -45,6 +36,8 @@ return {
 					"lua_ls",
 					"rust_analyzer",
 					"gopls",
+					"pyright",
+					"clangd",
 				},
 				handlers = {
 					function(server_name) -- default handler (optional)
