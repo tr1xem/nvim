@@ -22,20 +22,27 @@ return {
 				nerd_font_variant = "mono",
 			},
 			sources = {
-				default = { "avante", "path", "snippets", "lsp", "buffer" },
+				-- default = { "avante", "path", "snippets", "lsp", "buffer" },
+				default = { "lazydev", "path", "snippets", "lsp", "buffer" },
 				providers = {
 					path = { score_offset = 100 },
+					lazydev = {
+						name = "LazyDev",
+						module = "lazydev.integrations.blink",
+						-- make lazydev completions top priority (see `:h blink.cmp`)
+						score_offset = 100,
+					},
 					lsp = { score_offset = 90 },
 					snippets = { score_offset = 70 },
 					buffer = { score_offset = 10 }, -- Lower priority
-					avante = {
-						module = "blink-cmp-avante",
-						name = "Avante",
-						score_offset = 100,
-						opts = {
-							-- options for blink-cmp-avante
-						},
-					},
+					-- avante = {
+					-- 	module = "blink-cmp-avante",
+					-- 	name = "Avante",
+					-- 	score_offset = 100,
+					-- 	opts = {
+					-- 		-- options for blink-cmp-avante
+					-- 	},
+					-- },
 				},
 			},
 			fuzzy = { implementation = "prefer_rust_with_warning" },

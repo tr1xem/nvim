@@ -1,50 +1,64 @@
-return { {
-    "nvim-telescope/telescope.nvim",
+return {
+	{
+		"nvim-telescope/telescope.nvim",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		},
+		config = function()
+			local telescope = require("telescope")
+			local builtin = require("telescope.builtin")
 
-    tag = "0.1.5",
+			telescope.setup({
+				extensions = {
+					fzf = {},
+				},
+			})
 
-    dependencies = {
-        "nvim-lua/plenary.nvim",
-    },
+			telescope.load_extension("fzf")
 
-    config = function()
-        require('telescope').setup({
-            extensions = {
-                fzf = {}
-            }
-        })
+			local keymap = vim.keymap.set
 
-        require('telescope').load_extension('fzf')
-        local builtin = require('telescope.builtin')
-        vim.keymap.set('n', '<leader>pf', builtin.find_files, {})
-        vim.keymap.set('n', '<C-p>', builtin.git_files, {})
-        vim.keymap.set('n', '<leader>pws', function()
-            local word = vim.fn.expand("<cword>")
-            builtin.grep_string({ search = word })
-        end)
-        vim.keymap.set('n', '<leader>pWs', function()
-            local word = vim.fn.expand("<cWORD>")
-            builtin.grep_string({ search = word })
-        end)
-        vim.keymap.set('n', '<leader>ps', function()
-            builtin.grep_string({ search = vim.fn.input("Grep > ") })
-        end)
-        vim.keymap.set('n', '<leader>vh', builtin.help_tags, {})
-        vim.keymap.set('n', '<leader>b', function()
-            builtin.buffers({ sort_mru = true, ignore_current_buffer = true })
-        end)
-        vim.keymap.set({ 'n', 'v' }, '<leader>sr', require('telescope.builtin').lsp_references,
-            { silent = true, noremap = true })
-        vim.keymap.set("n", "<space›en", function()
-            require(' telescope.builtin').find_files {
-                cwd = vim.fn.stdpath("config") }
-        end)
-    end
-},
-    {
-        {
-            'nvim-telescope/telescope-fzf-native.nvim',
-            build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release'
-        }
-    }
+			-- File pickers
+			keymap("n", "<leader>pf", builtin.find_files, { desc = "Find files" })
+			keymap("n", "<C-p>", builtin.git_files, { desc = "Git files" })
+
+			-- Grep pickers
+			keymap("n", "<leader>pws", function()
+				builtin.grep_string({ search = vim.fn.expand("<cword>") })
+			end, { desc = "Grep current word" })
+
+			keymap("n", "<leader>pWs", function()
+				builtin.grep_string({ search = vim.fn.expand("<cWORD>") })
+			end, { desc = "Grep WORD under cursor" })
+
+			keymap("n", "<leader>ps", function()
+				builtin.grep_string({ search = vim.fn.input("Grep > ") })
+			end, { desc = "Grep user input" })
+
+			-- Help and buffers
+			keymap("n", "<leader>vh", builtin.help_tags, { desc = "Help tags" })
+			keymap("n", "<leader>b", function()
+				builtin.buffers({
+					sort_mru = true,
+					ignore_current_buffer = true,
+				})
+			end, { desc = "Buffers (MRU)" })
+
+			-- LSP references
+			keymap({ "n", "v" }, "<leader>sr", builtin.lsp_references, {
+				silent = true,
+				noremap = true,
+				desc = "LSP References",
+			})
+
+			-- Config files
+			keymap("n", "<space>en", function()
+				builtin.find_files({ cwd = vim.fn.stdpath("config") })
+			end, { desc = "Find config files" })
+		end,
+	},
+	{
+		"nvim-telescope/telescope-fzf-native.nvim",
+		build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release",
+	},
 }
