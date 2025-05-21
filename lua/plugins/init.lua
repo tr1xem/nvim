@@ -5,6 +5,7 @@ vim.keymap.set("v", "<space>x", ":lua<CR>")
 require("plugins.set")
 require("plugins.remap")
 require("plugins.lazy_init")
+require("mini.tabline").setup()
 vim.opt.colorcolumn = ""
 local augroup = vim.api.nvim_create_augroup
 local trixgroup = augroup("trixgroup", {})
@@ -42,36 +43,18 @@ autocmd("LspAttach", {
 	group = trixgroup,
 	callback = function(e)
 		local opts = { buffer = e.buf }
-		vim.keymap.set("n", "gd", function()
-			vim.lsp.buf.definition()
-		end, opts)
-		vim.keymap.set("n", "K", function()
-			vim.lsp.buf.hover()
-		end, opts)
-		vim.keymap.set("n", "<leader>vws", function()
-			vim.lsp.buf.workspace_symbol()
-		end, opts)
-		vim.keymap.set("n", "<leader>vd", function()
-			vim.diagnostic.open_float()
-		end, opts)
-		vim.keymap.set("n", "<leader>vca", function()
-			vim.lsp.buf.code_action()
-		end, opts)
-		vim.keymap.set("n", "<leader>vrr", function()
-			vim.lsp.buf.references()
-		end, opts)
-		vim.keymap.set("n", "<leader>vrn", function()
-			vim.lsp.buf.rename()
-		end, opts)
-		vim.keymap.set("i", "<C-h>", function()
-			vim.lsp.buf.signature_help()
-		end, opts)
-		vim.keymap.set("n", "[d", function()
-			vim.diagnostic.goto_next()
-		end, opts)
-		vim.keymap.set("n", "]d", function()
-			vim.diagnostic.goto_prev()
-		end, opts)
+		local keymap = vim.keymap.set
+
+		keymap("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
+		keymap("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
+		keymap("n", "<leader>vws", "<cmd>Lspsaga workspace_symbol<CR>", opts)
+		keymap("n", "<leader>vd", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
+		keymap("n", "<leader>vca", "<cmd>Lspsaga code_action<CR>", opts)
+		keymap("n", "<leader>vrr", "<cmd>Lspsaga finder<CR>", opts)
+		keymap("n", "<leader>vrn", "<cmd>Lspsaga rename<CR>", opts)
+		keymap("i", "<C-h>", "<cmd>Lspsaga signature_help<CR>", opts)
+		keymap("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
+		keymap("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
 	end,
 })
 
@@ -112,20 +95,6 @@ require("cord").setup({
 	},
 })
 
-require("lspconfig").clangd.setup({
-	settings = {
-		clangd = {
-			InlayHints = {
-				Designators = true,
-				Enabled = true,
-				ParameterNames = true,
-				DeducedTypes = true,
-			},
-			fallbackFlags = { "-std=c++20" },
-		},
-	},
-})
-
 vim.keymap.set("n", "<leader>f", function()
 	require("conform").format()
 end, { noremap = true, silent = true })
@@ -135,5 +104,15 @@ require("conform").setup({
 		-- These options will be passed to conform.format()
 		timeout_ms = 5000,
 		lsp_format = "fallback",
+	},
+})
+vim.diagnostic.config({
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "",
+			[vim.diagnostic.severity.WARN] = "",
+			[vim.diagnostic.severity.HINT] = "",
+			[vim.diagnostic.severity.INFO] = "",
+		},
 	},
 })

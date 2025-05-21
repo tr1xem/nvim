@@ -28,8 +28,10 @@ return {
 			},
 		})
 		require("mini.pairs").setup()
-		require("mini.extra").setup()
+		-- require("mini.extra").setup()
 		require("mini.icons").setup()
+		require("mini.snippets").setup()
 		require("mini.diff").setup()
+		require("mini.tabline").setup()
 	end,
 }

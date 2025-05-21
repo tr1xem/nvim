@@ -1,3 +1,14 @@
+-- Enable Neovim's built-in inlay hints for supported LSP clients
+vim.api.nvim_create_autocmd("LspAttach", {
+	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		if client and client.server_capabilities.inlayHintProvider then
+			vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+		end
+	end,
+})
+
 return {
 	{
 		"neovim/nvim-lspconfig",
@@ -6,9 +17,11 @@ return {
 			"mason-org/mason.nvim",
 			"mason-org/mason-lspconfig.nvim",
 			"j-hui/fidget.nvim",
+			"onsails/lspkind.nvim",
+			"garymjr/nvim-snippets",
 		},
-
 		config = function()
+			-- Formatter setup
 			require("conform").setup({
 				formatters_by_ft = {
 					lua = { "stylua" },
@@ -20,39 +33,31 @@ return {
 					typescript = { "prettierd", "prettier", stop_after_first = true },
 				},
 			})
-			-- local cmp_lsp = require("cmp_nvim_lsp")
+
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
-			-- local capabilities = vim.tbl_deep_extend(
-			--     "force",
-			--     {},
-			--     require('blink.cmp').get_lsp_capabilities({}, false),
-			--     vim.lsp.protocol.make_client_capabilities(),
-			--     cmp_lsp.default_capabilities())
-			-- --
+
+			-- Progress UI
 			require("fidget").setup({})
+
+			-- Mason setup
 			require("mason").setup()
 			require("mason-lspconfig").setup({
-				ensure_installed = {
-					"lua_ls",
-					"rust_analyzer",
-					"gopls",
-					"pyright",
-					"clangd",
-				},
+				ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pyright", "clangd" },
 				handlers = {
-					function(server_name) -- default handler (optional)
+					-- Default handler
+					function(server_name)
 						require("lspconfig")[server_name].setup({
 							capabilities = capabilities,
 						})
 					end,
-
+					-- Zig LSP
 					zls = function()
-						local lspconfig = require("lspconfig")
-						lspconfig.zls.setup({
-							root_dir = lspconfig.util.root_pattern(".git", "build.zig", "zls.json"),
+						require("lspconfig").zls.setup({
+							root_dir = require("lspconfig").util.root_pattern(".git", "build.zig", "zls.json"),
+							capabilities = capabilities,
 							settings = {
 								zls = {
-									enable_inlay_hints = true,
+									enable_inlay_hints = true, -- Re-enable zls inlay hints
 									enable_snippets = true,
 									warn_style = true,
 								},
@@ -61,9 +66,9 @@ return {
 						vim.g.zig_fmt_parse_errors = 0
 						vim.g.zig_fmt_autosave = 1
 					end,
-					["lua_ls"] = function()
-						local lspconfig = require("lspconfig")
-						lspconfig.lua_ls.setup({
+					-- Lua LSP
+					lua_ls = function()
+						require("lspconfig").lua_ls.setup({
 							capabilities = capabilities,
 							settings = {
 								Lua = {
@@ -77,52 +82,8 @@ return {
 					end,
 				},
 			})
-
-			-- local cmp_select = { behavior = cmp.SelectBehavior.Select }
-
-			-- cmp.setup({
-			--     snippet = {
-			--         expand = function(args)
-			--             require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-			--         end,
-			--     },
-			--     mapping = cmp.mapping.preset.insert({
-			--         ['<C-p>'] = cmp.mapping.select_prev_item(),
-			--         ['<C-n>'] = cmp.mapping.select_next_item(),
-			--         ['<C-y>'] = cmp.mapping.confirm({ select = true }),
-			--         ["<C-Space>"] = cmp.mapping.complete(),
-			--     }),
-			--     sources = cmp.config.sources({
-			--
-			--         {name = 'path'},
-			--         {name = 'blink.cmp'},
-			--         { name = "copilot", group_index = 2 },
-			--         { name = 'luasnip' }, -- For luasnip users.
-			--     })
-			-- })
-			--
-			-- vim.diagnostic.config({
-			--     -- update_in_insert = true,
-			--     float = {
-			--         focusable = false,
-			--         style = "minimal",
-			--         border = "rounded",
-			--         source = "always",
-			--         header = "",
-			--         prefix = "",
-			--     },
-			-- })
 		end,
 	},
-	{
-		"MysticalDevil/inlay-hints.nvim",
-		event = "LspAttach",
-		dependencies = { "neovim/nvim-lspconfig" },
-		config = function()
-			require("inlay-hints").setup()
-		end,
-	},
-	{ "onsails/lspkind.nvim" },
 	{
 		"garymjr/nvim-snippets",
 		keys = {

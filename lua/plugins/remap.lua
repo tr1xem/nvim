@@ -1,23 +1,9 @@
 vim.g.mapleader = " "
-function format_range_operator()
-    local old_func = vim.go.operatorfunc
-    _G.op_func_formatting = function()
-        local opts = {
-            range = {
-                ["start"] = vim.api.nvim_buf_get_mark(0, "["),
-                ["end"] = vim.api.nvim_buf_get_mark(0, "]"),
-            },
-        }
-        vim.lsp.buf.format(opts)
-        vim.go.operatorfunc = old_func
-        _G.op_func_formatting = nil
-    end
-    vim.go.operatorfunc = "v:lua.op_func_formatting"
-    vim.api.nvim_feedkeys("g@", "n", false)
-end
 
-vim.keymap.set("v", "<leader>f", "<Cmd>lua format_range_operator()<CR>")
 vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+
+-- Example: remap Esc in normal mode to clear search highlights
+vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { silent = true })
 
 vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -27,10 +13,10 @@ vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
 
 vim.keymap.set("n", "<leader>vwm", function()
-    require("vim-with-me").StartVimWithMe()
+	require("vim-with-me").StartVimWithMe()
 end)
 vim.keymap.set("n", "<leader>svwm", function()
-    require("vim-with-me").StopVimWithMe()
+	require("vim-with-me").StopVimWithMe()
 end)
 
 -- greatest remap ever
@@ -62,7 +48,7 @@ vim.keymap.set("n", "<leader>ee", "oif err != nil {<CR>}<Esc>Oreturn err<Esc>")
 vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>")
 
 vim.keymap.set("n", "<leader><leader>", function()
-    vim.cmd("so")
+	vim.cmd("so")
 end)
 
 -- No arrow navigation
@@ -76,15 +62,15 @@ vim.api.nvim_set_keymap("v", "<Down>", "<Nop>", { noremap = true, silent = true 
 vim.api.nvim_set_keymap("v", "<Left>", "<Nop>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<Right>", "<Nop>", { noremap = true, silent = true })
 vim.api.nvim_create_autocmd("FileType", {
-    pattern = "python",
-    callback = function()
-        vim.keymap.set(
-            "n",
-            "<leader>f",
-            ":silent! !black %<CR>:edit<CR>",
-            { noremap = true, silent = true, buffer = true }
-        )
-    end,
+	pattern = "python",
+	callback = function()
+		vim.keymap.set(
+			"n",
+			"<leader>f",
+			":silent! !black %<CR>:edit<CR>",
+			{ noremap = true, silent = true, buffer = true }
+		)
+	end,
 })
 vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>")
 vim.keymap.set("n", "<M-k>", "<cd> cprey<CR>")
