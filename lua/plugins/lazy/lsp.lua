@@ -59,11 +59,13 @@ return {
 							diagnosticSeverityOverrides = {
 								reportCallIssue = "warning",
 								reportUnreachable = "warning",
+								reportAttributeAccessIssue = "none",
 								reportUnknownVariableType = "none",
 								reportUnknownLamdaType = "none",
 								reportUnknownParameterType = "none",
 								reportMissingParameterType = "none",
 								reportUnknownMemberType = "none",
+								reportArgumentType = "none",
 								reportAny = "none",
 								reportUnknownArgumentType = "none",
 								-- reportUnannotatedClassAttribute = "none",
