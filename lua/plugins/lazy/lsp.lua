@@ -1,13 +1,13 @@
--- Enable Neovim's built-in inlay hints for supported LSP clients
-vim.api.nvim_create_autocmd("LspAttach", {
-	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
-	callback = function(args)
-		local client = vim.lsp.get_client_by_id(args.data.client_id)
-		if client and client.server_capabilities.inlayHintProvider then
-			vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
-		end
-	end,
-})
+-- -- Enable Neovim's built-in inlay hints for supported LSP clients
+-- vim.api.nvim_create_autocmd("LspAttach", {
+-- 	group = vim.api.nvim_create_augroup("UserLspConfig", { clear = true }),
+-- 	callback = function(args)
+-- 		local client = vim.lsp.get_client_by_id(args.data.client_id)
+-- 		if client and client.server_capabilities.inlayHintProvider then
+-- 			vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+-- 		end
+-- 	end,
+-- })
 
 return {
 	{
@@ -30,19 +30,60 @@ return {
 					json = { "clang-format", "json_tool" },
 					cpp = { "clang-format" },
 					javascript = { "prettierd", "prettier", stop_after_first = true },
+					css = { "prettier", stop_after_first = true },
 					typescript = { "prettierd", "prettier", stop_after_first = true },
 				},
+			})
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+				callback = function(args)
+					local client = vim.lsp.get_client_by_id(args.data.client_id)
+					if client.server_capabilities.inlayHintProvider then
+						vim.lsp.inlay_hint.enable(true)
+					end
+					-- whatever other lsp config you want
+				end,
 			})
 
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
 
 			-- Progress UI
 			require("fidget").setup({})
+			-- BasedPyright LSP
+			require("lspconfig").basedpyright.setup({
+				capabilities = capabilities,
+				settings = {
+					basedpyright = {
+						analysis = {
+							ignorePatterns = { "*.pyi" },
+							diagnosticSeverityOverrides = {
+								reportCallIssue = "warning",
+								reportUnreachable = "warning",
+								reportUnknownVariableType = "none",
+								reportUnknownLamdaType = "none",
+								reportUnknownParameterType = "none",
+								reportMissingParameterType = "none",
+								reportUnknownMemberType = "none",
+								reportAny = "none",
+								reportUnknownArgumentType = "none",
+								-- reportUnannotatedClassAttribute = "none",
+								typeCheckingMode = "basic",
+								reportUnusedCoroutine = "warning",
+							},
+							-- diagnosticMode = "workspace",
+							diagnosticMode = "openFilesOnly",
+							typeCheckingMode = "basic",
+							reportCallIssue = "none",
+							-- disableOrganizeImports = true,
+						},
+					},
+				},
+			})
 
 			-- Mason setup
 			require("mason").setup()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "rust_analyzer", "gopls", "pyright", "clangd" },
+				ensure_installed = { "lua_ls", "basedpyright", "rust_analyzer", "gopls", "clangd" },
 				handlers = {
 					-- Default handler
 					function(server_name)
@@ -66,6 +107,7 @@ return {
 						vim.g.zig_fmt_parse_errors = 0
 						vim.g.zig_fmt_autosave = 1
 					end,
+
 					-- Lua LSP
 					lua_ls = function()
 						require("lspconfig").lua_ls.setup({

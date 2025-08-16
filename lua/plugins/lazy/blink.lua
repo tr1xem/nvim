@@ -23,7 +23,7 @@ return {
 			},
 			sources = {
 				-- default = { "avante", "path", "snippets", "lsp", "buffer" },
-				default = { "path", "snippets", "lazydev", "lsp", "buffer" },
+				default = { "lazydev", "lsp", "path", "snippets", "buffer" },
 				providers = {
 					path = { score_offset = 100 },
 					lazydev = {
@@ -49,50 +49,23 @@ return {
 			completion = {
 				menu = {
 					draw = {
-						padding = { 2, 1 }, -- padding only on right side
+						-- We don't need label_description now because label and label_description are already
+						-- combined together in label by colorful-menu.nvim.
+						columns = { { "kind_icon" }, { "label", "kind", gap = 3 } },
 						components = {
-							kind_icon = {
+							label = {
 								text = function(ctx)
-									local icon = ctx.kind_icon
-									if vim.tbl_contains({ "Path" }, ctx.source_name) then
-										local dev_icon, _ = require("nvim-web-devicons").get_icon(ctx.label)
-										if dev_icon then
-											icon = dev_icon
-										end
-									else
-										icon = require("lspkind").symbolic(ctx.kind, {
-											mode = "symbol",
-										})
-									end
-
-									return icon .. ctx.icon_gap
+									return require("colorful-menu").blink_components_text(ctx)
 								end,
-
-								-- Optionally, use the highlight groups from nvim-web-devicons
-								-- You can also add the same function for `kind.highlight` if you want to
-								-- keep the highlight groups in sync with the icons.
 								highlight = function(ctx)
-									local hl = ctx.kind_hl
-									if vim.tbl_contains({ "Path" }, ctx.source_name) then
-										local dev_icon, dev_hl = require("nvim-web-devicons").get_icon(ctx.label)
-										if dev_icon then
-											hl = dev_hl
-										end
-									end
-									return hl
+									return require("colorful-menu").blink_components_highlight(ctx)
 								end,
 							},
 						},
-						columns = {
-							{ "label" },
-							{ "kind_icon", "kind" },
-						},
 					},
 				},
-				documentation = { auto_show = false, auto_show_delay_ms = 500 },
 			},
 			signature = { enabled = true },
-			opts_extend = { "sources.default" },
 		},
 	},
 }

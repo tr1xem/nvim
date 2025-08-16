@@ -1,27 +1,23 @@
+-- Key mappings
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
-vim.keymap.set("n", "<space>x", ":.lua<CR>")
-vim.keymap.set("v", "<space>x", ":lua<CR>")
 
-require("plugins.set")
-require("plugins.remap")
-require("plugins.lazy_init")
-require("mini.tabline").setup()
+-- Plugin configurations
+require("plugins.set") -- General settings
+require("plugins.remap") -- Key mappings
+require("plugins.lazy_init") -- Lazy.nvim setup
+
+-- Mini tabline setup
+-- require("mini.tabline").setup()
+
+-- Disable color column
 vim.opt.colorcolumn = ""
+
+-- Autocommands
 local augroup = vim.api.nvim_create_augroup
-local trixgroup = augroup("trixgroup", {})
-local yank_group = augroup("HighlightYank", {})
-
 local autocmd = vim.api.nvim_create_autocmd
-function R(name)
-	require("plenary.reload").reload_module(name)
-end
 
-vim.filetype.add({
-	extension = {
-		templ = "templ",
-	},
-})
-
+-- Highlight yank
+local yank_group = augroup("HighlightYank", {})
 autocmd("TextYankPost", {
 	group = yank_group,
 	pattern = "*",
@@ -33,12 +29,15 @@ autocmd("TextYankPost", {
 	end,
 })
 
-autocmd({ "BufWritePre" }, {
+-- Remove trailing whitespace on save
+local trixgroup = augroup("trixgroup", {})
+autocmd("BufWritePre", {
 	group = trixgroup,
 	pattern = "*",
 	command = [[%s/\s\+$//e]],
 })
 
+-- LSP key mappings
 autocmd("LspAttach", {
 	group = trixgroup,
 	callback = function(e)
@@ -58,14 +57,16 @@ autocmd("LspAttach", {
 	end,
 })
 
-vim.api.nvim_create_autocmd("TermOpen", {
-	group = vim.api.nvim_create_augroup("custom-term-open", { clear = true }),
+-- Terminal settings
+autocmd("TermOpen", {
+	group = augroup("custom-term-open", { clear = true }),
 	callback = function()
 		vim.opt.number = false
 		vim.opt.relativenumber = false
 	end,
 })
 
+-- Open terminal in a new split
 vim.keymap.set("n", "<leader>st", function()
 	vim.cmd.vnew()
 	vim.cmd.term()
@@ -73,14 +74,10 @@ vim.keymap.set("n", "<leader>st", function()
 	vim.api.nvim_win_set_height(0, 15)
 end)
 
-require("lualine").setup({
-	options = {
-		theme = "catppuccin",
-	},
-})
+-- Colorscheme
+vim.cmd("colorscheme tokyonight")
 
-vim.cmd.colorscheme("catppuccin")
-
+-- Cord setup
 require("cord").setup({
 	display = {},
 	buttons = {
@@ -95,17 +92,20 @@ require("cord").setup({
 	},
 })
 
+-- Formatting key mapping
 vim.keymap.set("n", "<leader>f", function()
 	require("conform").format()
 end, { noremap = true, silent = true })
 
+-- Conform setup
 require("conform").setup({
 	format_on_save = {
-		-- These options will be passed to conform.format()
 		timeout_ms = 5000,
 		lsp_format = "fallback",
 	},
 })
+
+-- Diagnostic signs
 vim.diagnostic.config({
 	signs = {
 		text = {
