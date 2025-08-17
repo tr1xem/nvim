@@ -12,9 +12,16 @@ return {
 				sign = false,
 				virtual_text = true,
 			},
+			code_action = {
+				keys = {
+					quit = { "q", "<ESC>" },
+				},
+			},
+			finder = {
+				keys = {
+					quit = { "q", "<ESC>" },
+				},
+			},
 		})
-		vim.keymap.set("n", "[E", function()
-			require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-		end)
 	end,
 }
