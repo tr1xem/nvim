@@ -16,6 +16,15 @@ return {
 				-- Check `:help vim.lsp.*` for documentation on any of the below functions
 				local opts = { buffer = ev.buf, silent = true }
 
+				local client = vim.lsp.get_client_by_id(ev.data.client_id)
+				if client == nil then
+					return
+				end
+				if client.name == "ruff" then
+					-- Disable hover in favor of Pyright
+					client.server_capabilities.hoverProvider = false
+				end
+
 				-- keymaps
 				opts.desc = "Show LSP references/dereferences"
 				vim.keymap.set("n", "<leader>vrr", "<cmd>Lspsaga finder def+ref<CR>", opts)
@@ -279,5 +288,6 @@ return {
 		-- lspconfig.gopls.setup({ capabilities = capabilities })
 		-- lspconfig.html.setup({ capabilities = capabilities })
 		-- lspconfig.cssls.setup({ capabilities = capabilities })
+		vim.lsp.inlay_hint.enable(true)
 	end,
 }

@@ -10,14 +10,6 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
-vim.keymap.set("n", "<leader>zig", "<cmd>LspRestart<cr>")
-
-vim.keymap.set("n", "<leader>vwm", function()
-	require("vim-with-me").StartVimWithMe()
-end)
-vim.keymap.set("n", "<leader>svwm", function()
-	require("vim-with-me").StopVimWithMe()
-end)
 
 -- greatest remap ever
 vim.keymap.set("x", "<leader>p", [["_dP]])
@@ -61,17 +53,6 @@ vim.api.nvim_set_keymap("v", "<Up>", "<Nop>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<Down>", "<Nop>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<Left>", "<Nop>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("v", "<Right>", "<Nop>", { noremap = true, silent = true })
-vim.api.nvim_create_autocmd("FileType", {
-	pattern = "python",
-	callback = function()
-		vim.keymap.set(
-			"n",
-			"<leader>f",
-			":silent! !black %<CR>:edit<CR>",
-			{ noremap = true, silent = true, buffer = true }
-		)
-	end,
-})
 vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>")
 vim.keymap.set("n", "<M-k>", "<cd> cprey<CR>")
 vim.keymap.set("i", "<C-L>", "<Nop>", { noremap = true, silent = true })
