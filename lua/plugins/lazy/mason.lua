@@ -43,6 +43,8 @@ return {
 				"gopls",
 				"emmet_ls",
 				"emmet_language_server",
+				"ruff",
+				"basedpyright",
 				-- "eslint",
 				"marksman",
 			},

@@ -13,12 +13,6 @@ return {
 				right = "L",
 				down = "J",
 				up = "K",
-
-				-- Move current line in Normal mode
-				line_left = "<M-h>",
-				line_right = "<M-l>",
-				line_down = "<M-j>",
-				line_up = "<M-k>",
 			},
 
 			-- Options which control moving behavior
@@ -33,9 +27,9 @@ return {
 		-- require("mini.icons").setup()
 		require("mini.snippets").setup()
 		require("mini.diff").setup()
-		require("mini.tabline").setup()
+		-- require("mini.tabline").setup()
 		vim.keymap.set("n", "<leader>cw", function()
-			miniTrailspace.trim()
+			require("mini.trailspace").trim()
 		end, { desc = "Erase Whitespace" })
 	end,
 }

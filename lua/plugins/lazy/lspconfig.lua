@@ -191,14 +191,28 @@ return {
 				},
 			},
 		})
-		require("lspconfig").pyright.setup({
+		-- require("lspconfig").pyright.setup({
+		-- 	settings = {
+		-- 		pyright = {
+		-- 			inlayHints = true,
+		-- 			-- Using Ruff's import organizer
+		-- 			disableOrganizeImports = true,
+		-- 		},
+		-- 		python = {
+		-- 			analysis = {
+		-- 				-- Ignore all files for analysis to exclusively use Ruff for linting
+		-- 				ignore = { "*" },
+		-- 			},
+		-- 		},
+		-- 	},
+		-- })
+		-- ts_ls (replaces tsserver)
+		lspconfig.basedpyright.setup({
+			capabilities = capabilities,
 			settings = {
-				pyright = {
+				basedpyright = {
 					inlayHints = true,
-					-- Using Ruff's import organizer
 					disableOrganizeImports = true,
-				},
-				python = {
 					analysis = {
 						-- Ignore all files for analysis to exclusively use Ruff for linting
 						ignore = { "*" },
@@ -206,20 +220,6 @@ return {
 				},
 			},
 		})
-		-- ts_ls (replaces tsserver)
-		-- 		lspconfig.basedpyright.setup({
-		-- 			capabilities = capabilities,
-		-- 			settings = {
-		-- 				basedpyright = {
-		-- inlayHints = true,
-		-- 					disableOrganizeImports = true,
-		-- 					analysis = {
-		-- 						-- Ignore all files for analysis to exclusively use Ruff for linting
-		-- 						ignore = { "*" },
-		-- 					},
-		-- 				},
-		-- 			},
-		-- 		})
 		lspconfig.ts_ls.setup({
 			capabilities = capabilities,
 			root_dir = function(fname)
