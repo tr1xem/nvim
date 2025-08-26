@@ -268,27 +268,27 @@ return {
 				end, { "i", "s" }),
 
 				["<C-Space>"] = cmp.mapping.complete(),
-				["<S-Tab>"] = cmp.mapping(function(fallback)
-					if has_luasnip and in_snippet() and luasnip.jumpable(-1) then
-						luasnip.jump(-1)
-					elseif in_leading_indent() then
-						smart_bs(true) -- true means to dedent
-					elseif in_whitespace() then
-						smart_bs()
-					else
-						fallback()
-					end
-				end, { "i", "s" }),
-
-				["<Tab>"] = cmp.mapping(function(_fallback)
-					if has_luasnip and luasnip.expand_or_locally_jumpable() then
-						luasnip.expand_or_jump()
-					elseif in_whitespace() then
-						smart_tab()
-					else
-						cmp.complete()
-					end
-				end, { "i", "s" }),
+				-- ["<S-Tab>"] = cmp.mapping(function(fallback)
+				-- 	if has_luasnip and in_snippet() and luasnip.jumpable(-1) then
+				-- 		luasnip.jump(-1)
+				-- 	elseif in_leading_indent() then
+				-- 		smart_bs(true) -- true means to dedent
+				-- 	elseif in_whitespace() then
+				-- 		smart_bs()
+				-- 	else
+				-- 		fallback()
+				-- 	end
+				-- end, { "i", "s" }),
+				--
+				-- ["<Tab>"] = cmp.mapping(function(_fallback)
+				-- 	if has_luasnip and luasnip.expand_or_locally_jumpable() then
+				-- 		luasnip.expand_or_jump()
+				-- 	elseif in_whitespace() then
+				-- 		smart_tab()
+				-- 	else
+				-- 		cmp.complete()
+				-- 	end
+				-- end, { "i", "s" }),
 			}),
 			-- setup lspkind for vscode pictograms in autocompletion dropdown menu
 			formatting = {
@@ -353,9 +353,9 @@ return {
 			end
 		end
 
-		vim.api.nvim_create_autocmd({ "InsertEnter", "CursorMovedI" }, {
-			callback = toggle_ghost_text,
-		})
+		-- vim.api.nvim_create_autocmd({ "InsertEnter", "CursorMovedI" }, {
+		-- 	callback = toggle_ghost_text,
+		-- })
 		-- ! Ghost text stuff ! --
 	end,
 }
