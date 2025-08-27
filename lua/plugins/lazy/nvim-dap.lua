@@ -64,7 +64,19 @@ return {
 				type = "cppdbg",
 				request = "launch",
 				program = function()
-					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
+					local input = vim.fn.input("Path to executable (you can add args): ", vim.fn.getcwd() .. "")
+					local words = vim.split(input, " ")
+					-- first word is program, rest are args
+					local exe = words[1]
+					local args = {}
+					if #words > 1 then
+						for i = 2, #words do
+							table.insert(args, words[i])
+						end
+					end
+					-- save args so dap can see them
+					dap.configurations.cpp[1].args = args
+					return exe
 				end,
 				cwd = "${workspaceFolder}",
 				stopAtEntry = true,

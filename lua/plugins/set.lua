@@ -36,4 +36,3 @@ vim.opt.ignorecase = true
 vim.diagnostic.config({
 	virtual_text = false,
 })
-vim.o.autochdir = true

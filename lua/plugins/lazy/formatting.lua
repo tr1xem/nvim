@@ -31,6 +31,7 @@ return {
 				javascriptreact = { "prettier" },
 				typescriptreact = { "prettier" },
 				css = { "prettier" },
+				-- c = { "clang_format" },
 				cpp = { "clang_format" },
 				html = { "prettier" },
 				svelte = { "prettier" },
