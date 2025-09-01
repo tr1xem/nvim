@@ -13,7 +13,7 @@ return {
 			javascriptreact = { "biomejs" },
 			typescriptreact = { "biomejs" },
 			svelte = { "biomejs" },
-			python = { "ruff" },
+			-- python = { "mypy" },
 		}
 
 		eslint.args = {

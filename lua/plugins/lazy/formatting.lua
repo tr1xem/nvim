@@ -36,6 +36,7 @@ return {
 				yaml = { "prettier" },
 				graphql = { "prettier" },
 				liquid = { "prettier" },
+				scss = { "prettier" },
 				lua = { "stylua" },
 				python = {
 					"ruff_format",

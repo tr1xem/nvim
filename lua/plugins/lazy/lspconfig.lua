@@ -20,10 +20,6 @@ return {
 				if client == nil then
 					return
 				end
-				if client.name == "ruff" then
-					-- Disable hover in favor of Pyright
-					client.server_capabilities.hoverProvider = false
-				end
 
 				-- keymaps
 				opts.desc = "Show LSP references/dereferences"
@@ -55,6 +51,7 @@ return {
 				vim.keymap.set("n", "<leader>vd", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
 
 				opts.desc = "Show documentation for what is under cursor"
+				-- vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
 				vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
 
 				opts.desc = "Restart LSP"
@@ -137,7 +134,11 @@ return {
 			},
 		})
 
+		-- qmljs
+		require("lspconfig").qmlls.setup({})
+
 		-- emmet_language_server
+
 		lspconfig.emmet_language_server.setup({
 			capabilities = capabilities,
 			filetypes = {
@@ -184,17 +185,7 @@ return {
 				},
 			},
 		})
-		lspconfig.ruff.setup({
-			init_options = {
-				settings = {
-					logLevel = "debug",
-					lint = {
-						select = { "E", "F", "I", "TCH" },
-					},
-				},
-			},
-		})
-		-- require("lspconfig").pyright.setup({
+		-- vim.lsp.config("pyright", {
 		-- 	settings = {
 		-- 		pyright = {
 		-- 			inlayHints = true,
@@ -203,41 +194,54 @@ return {
 		-- 		},
 		-- 		python = {
 		-- 			analysis = {
-		-- 				-- Ignore all files for analysis to exclusively use Ruff for linting
-		-- 				typeCheckingMode = "basic", -- or "strict"
-		-- 				diagnosticSeverityOverrides = {
-		-- 					ignore = { "*" },
-		-- 				},
+		-- 				ignore = { "*" },
 		-- 			},
 		-- 		},
 		-- 	},
 		-- })
+		-- vim.lsp.config("pylsp", {
+		-- 	settings = {
+		-- 		pylsp = {
+		-- 			signature = {
+		-- 				formatter = "ruff",
+		-- 			},
+		-- 			plugins = {
+		-- 				rope_autoimport = {
+		-- 					enabled = false,
+		-- 					-- 	memory = true,
+		-- 					completions = {
+		-- 						enabled = true,
+		-- 					},
+		-- 					code_actions = {
+		-- 						enabled = true,
+		-- 					},
+		-- 				},
+		-- 				-- pylsp_mypy = { enabled = true },
+		-- 				pylsp_ruff = { enabled = true },
+		-- 			},
+		-- 		},
+		-- 	},
+		-- })
+		-- vim.lsp.enable("pylsp")
+		-- vim.lsp.enable("pyright")
 		-- ts_ls (replaces tsserver)
-		lspconfig.basedpyright.setup({
+
+		vim.lsp.config("basedpyright", {
 			capabilities = capabilities,
 			settings = {
 				basedpyright = {
 					inlayHints = true,
-					disableDiagnostics = true,
 					disableOrganizeImports = true,
 					analysis = {
 						-- Ignore all files for analysis to exclusively use Ruff for linting
 						-- Enable diagnostics
 						-- ignore = { "*" },
-						diagnosticSeverityOverrides = {
-							reportUnusedImport = "none",
-							reportUnusedVariable = "none",
-							reportAttributeAccessIssue = "none",
-							reportUnusedClass = "none",
-							reportUnusedFunction = "none",
-							reportDuplicateImport = "none",
-							reportArgumentType = "error",
-						},
 						typeCheckingMode = "basic",
 					},
 				},
 			},
 		})
+		vim.lsp.enable("basedpyright")
 		lspconfig.ts_ls.setup({
 			capabilities = capabilities,
 			root_dir = function(fname)
