@@ -43,8 +43,8 @@ return {
 				"gopls",
 				"emmet_ls",
 				"emmet_language_server",
-				-- "ruff",
-				-- "basedpyright",
+				"ruff",
+				"basedpyright",
 				-- "eslint",
 				"marksman",
 			},
@@ -55,7 +55,7 @@ return {
 				"prettier", -- prettier formatter
 				"stylua", -- lua formatter
 				-- "isort", -- python formatter
-				-- "pylint",
+				"pylint",
 				"clangd",
 				"denols",
 				-- { 'eslint_d', version = '13.1.2' },

@@ -30,6 +30,7 @@ return {
 				javascriptreact = { "prettier" },
 				typescriptreact = { "prettier" },
 				css = { "prettier" },
+				cpp = { "clang_format" },
 				html = { "prettier" },
 				svelte = { "prettier" },
 				json = { "prettier" },
@@ -41,7 +42,7 @@ return {
 				python = {
 					"ruff_format",
 					"ruff_fix",
-					"ruff_organize_imports",
+					-- "ruff_organize_imports",
 				},
 
 				markdown = { "prettier", "markdown-toc" },
@@ -50,7 +51,7 @@ return {
 			format_on_save = {
 				lsp_fallback = true,
 				async = false,
-				timeout_ms = 1000,
+				timeout_ms = 300,
 			},
 		})
 

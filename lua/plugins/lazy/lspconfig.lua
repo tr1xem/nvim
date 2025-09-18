@@ -5,6 +5,7 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 		-- "saghen/blink.cmp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
+		"p00f/clangd_extensions.nvim",
 	},
 	config = function()
 		-- NOTE: LSP Keybinds
@@ -97,7 +98,14 @@ return {
 		-- Setup servers
 		local lspconfig = require("lspconfig")
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-		local capabilities = cmp_nvim_lsp.default_capabilities()
+		-- local capabilities = cmp_nvim_lsp.default_capabilities()
+		local capabilities = vim.tbl_deep_extend(
+			"force",
+			{},
+			vim.lsp.protocol.make_client_capabilities(),
+			cmp_nvim_lsp.default_capabilities()
+		)
+
 		-- Config lsp servers here
 		-- lua_ls
 		lspconfig.lua_ls.setup({
@@ -172,16 +180,11 @@ return {
 			root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
 		})
 
-		require("lspconfig").clangd.setup({
+		lspconfig.clangd.setup({
+			capabilities = capabilities,
 			settings = {
 				clangd = {
-					InlayHints = {
-						Designators = true,
-						Enabled = true,
-						ParameterNames = true,
-						DeducedTypes = true,
-					},
-					fallbackFlags = { "-std=c++20" },
+					fallbackFlags = { "-std=c++23", "-Wall", "-Wextra", "-Wunused-variable", "-fanalyzer" },
 				},
 			},
 		})
@@ -226,7 +229,8 @@ return {
 		-- vim.lsp.enable("pyright")
 		-- ts_ls (replaces tsserver)
 
-		vim.lsp.config("basedpyright", {
+		-- vim.lsp.config("basedpyright", {
+		lspconfig.basedpyright.setup({
 			capabilities = capabilities,
 			settings = {
 				basedpyright = {
@@ -241,7 +245,6 @@ return {
 				},
 			},
 		})
-		vim.lsp.enable("basedpyright")
 		lspconfig.ts_ls.setup({
 			capabilities = capabilities,
 			root_dir = function(fname)
@@ -311,5 +314,11 @@ return {
 		-- lspconfig.html.setup({ capabilities = capabilities })
 		-- lspconfig.cssls.setup({ capabilities = capabilities })
 		vim.lsp.inlay_hint.enable(true)
+		vim.keymap.set(
+			"n",
+			"<leader>ch",
+			"<cmd>ClangdSwitchSourceHeader<cr>",
+			{ desc = "Switch Source/Header (C/C++)" }
+		)
 	end,
 }

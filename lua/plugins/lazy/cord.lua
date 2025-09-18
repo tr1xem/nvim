@@ -1,6 +1,10 @@
 return {
-    {
-        "vyfor/cord.nvim",  -- Plugin repository
-        event = "VeryLazy", -- Load this plugin on VeryLazy event
-    },
+	"vyfor/cord.nvim",
+	build = ":Cord update",
+	opts = {
+
+		display = {
+			theme = "atom",
+		},
+	},
 }
