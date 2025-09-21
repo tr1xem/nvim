@@ -14,7 +14,6 @@ return {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
 				-- Buffer local mappings
-				-- Check `:help vim.lsp.*` for documentation on any of the below functions
 				local opts = { buffer = ev.buf, silent = true }
 
 				local client = vim.lsp.get_client_by_id(ev.data.client_id)

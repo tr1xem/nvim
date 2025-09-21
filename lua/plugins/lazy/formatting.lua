@@ -26,6 +26,7 @@ return {
 			},
 			formatters_by_ft = {
 				javascript = { "prettier" },
+				-- javascript = { "biome" },
 				typescript = { "prettier" },
 				javascriptreact = { "prettier" },
 				typescriptreact = { "prettier" },
