@@ -228,8 +228,8 @@ return {
 				{ name = "luasnip" }, -- snippets
 				{ name = "lazydev" },
 				{ name = "nvim_lsp" },
-				{ name = "buffer" }, -- text within current buffer
 				{ name = "path" }, -- file system paths
+				{ name = "buffer" }, -- text within current buffer
 				{ name = "tailwindcss-colorizer-cmp" },
 			}),
 			-- mapping = cmp.mapping.preset.insert({
@@ -268,27 +268,27 @@ return {
 				end, { "i", "s" }),
 
 				["<C-Space>"] = cmp.mapping.complete(),
-				-- ["<S-Tab>"] = cmp.mapping(function(fallback)
-				-- 	if has_luasnip and in_snippet() and luasnip.jumpable(-1) then
-				-- 		luasnip.jump(-1)
-				-- 	elseif in_leading_indent() then
-				-- 		smart_bs(true) -- true means to dedent
-				-- 	elseif in_whitespace() then
-				-- 		smart_bs()
-				-- 	else
-				-- 		fallback()
-				-- 	end
-				-- end, { "i", "s" }),
-				--
-				-- ["<Tab>"] = cmp.mapping(function(_fallback)
-				-- 	if has_luasnip and luasnip.expand_or_locally_jumpable() then
-				-- 		luasnip.expand_or_jump()
-				-- 	elseif in_whitespace() then
-				-- 		smart_tab()
-				-- 	else
-				-- 		cmp.complete()
-				-- 	end
-				-- end, { "i", "s" }),
+				["<S-Tab>"] = cmp.mapping(function(fallback)
+					if has_luasnip and in_snippet() and luasnip.jumpable(-1) then
+						luasnip.jump(-1)
+					elseif in_leading_indent() then
+						smart_bs(true) -- true means to dedent
+					elseif in_whitespace() then
+						smart_bs()
+					else
+						fallback()
+					end
+				end, { "i", "s" }),
+				["<Tab>"] = cmp.mapping(function(fallback)
+					-- Always prioritize snippet navigation first, even in comments
+					if has_luasnip and luasnip.expand_or_locally_jumpable() then
+						luasnip.expand_or_jump()
+					elseif require("supermaven-nvim.completion_preview").has_suggestion() then
+						require("supermaven-nvim.completion_preview").on_accept_suggestion()
+					else
+						fallback()
+					end
+				end, { "i", "s" }),
 			}),
 			-- setup lspkind for vscode pictograms in autocompletion dropdown menu
 			formatting = {

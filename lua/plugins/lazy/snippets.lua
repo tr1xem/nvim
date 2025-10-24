@@ -26,6 +26,22 @@ return {
 			ls.filetype_extend("sh", { "shelldoc" })
 
 			--- TODO: What is expand?
+			---
+			-- vim.keymap.set({ "i", "s" }, "<Tab>", function()
+			-- 	if ls.expand_or_jumpable() then
+			-- 		ls.expand_or_jump()
+			-- 	else
+			-- 		return "<Tab>"
+			-- 	end
+			-- end, { silent = true, expr = true })
+			--
+			-- vim.keymap.set({ "i", "s" }, "<S-Tab>", function()
+			-- 	if ls.jumpable(-1) then
+			-- 		ls.jump(-1)
+			-- 	else
+			-- 		return "<S-Tab>"
+			-- 	end
+			-- end, { silent = true, expr = true })
 			-- friendly-snippets - enable standardized comments snippets
 		end,
 	},

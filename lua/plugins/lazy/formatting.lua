@@ -26,12 +26,11 @@ return {
 			},
 			formatters_by_ft = {
 				javascript = { "prettier" },
-				-- javascript = { "biome" },
 				typescript = { "prettier" },
 				javascriptreact = { "prettier" },
 				typescriptreact = { "prettier" },
 				css = { "prettier" },
-				-- c = { "clang_format" },
+				c = { "clang_format" },
 				cpp = { "clang_format" },
 				html = { "prettier" },
 				svelte = { "prettier" },
@@ -48,7 +47,7 @@ return {
 				},
 
 				markdown = { "prettier", "markdown-toc" },
-				-- ["markdown.mdx"] = { "prettier", "markdownlint", "markdown-toc" },
+				["markdown.mdx"] = { "prettier", "markdownlint", "markdown-toc" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
@@ -75,7 +74,7 @@ return {
 		vim.keymap.set({ "n", "v" }, "<leader>f", function()
 			conform.format({
 				lsp_fallback = true,
-				async = false,
+				async = true,
 				timeout_ms = 1000,
 			})
 		end, { desc = "Format whole file or range (in visual mode) with" })

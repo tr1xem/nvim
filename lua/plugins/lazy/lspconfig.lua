@@ -57,8 +57,8 @@ return {
 				opts.desc = "Restart LSP"
 				vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
-				opts.desc = "Signature help"
-				vim.keymap.set("i", "<C-h>", "<cmd>Lspsaga signature_help<CR>", opts)
+				-- opts.desc = "Signature help"
+				-- vim.keymap.set("i", "<C-h>", "<cmd>Lspsaga signature_help<CR>", opts)
 
 				opts.desc = "Jump to prev diagnostic"
 				vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
@@ -95,9 +95,11 @@ return {
 		-- as mason setup_handlers is deprecated & its causing issues with lsp settings
 		--
 		-- Setup servers
-		local lspconfig = require("lspconfig")
+		-- local lspconfig = require("lspconfig")
 		local cmp_nvim_lsp = require("cmp_nvim_lsp")
 		-- local capabilities = cmp_nvim_lsp.default_capabilities()
+		-- NOTE: For blink.cmp
+		-- local capabilities = require("blink.cmp").get_lsp_capabilities() -- Import capabilities from blink.cmp
 		local capabilities = vim.tbl_deep_extend(
 			"force",
 			{},
@@ -105,9 +107,15 @@ return {
 			cmp_nvim_lsp.default_capabilities()
 		)
 
-		-- Config lsp servers here
+		-- perlnavigator
+		vim.lsp.enable("perlnavigator")
+		vim.lsp.config("perlnavigator", {
+			capabilities = capabilities,
+		})
+
 		-- lua_ls
-		lspconfig.lua_ls.setup({
+		vim.lsp.enable("lua_ls")
+		vim.lsp.config("lua_ls", {
 			capabilities = capabilities,
 			settings = {
 				Lua = {
@@ -126,8 +134,10 @@ return {
 				},
 			},
 		})
+
 		-- emmet_ls
-		lspconfig.emmet_ls.setup({
+		vim.lsp.enable("emmet_ls")
+		vim.lsp.config("emmet_ls", {
 			capabilities = capabilities,
 			filetypes = {
 				"html",
@@ -142,11 +152,14 @@ return {
 		})
 
 		-- qmljs
-		require("lspconfig").qmlls.setup({})
+		-- vim.lsp.enable("qmlls")
+		-- vim.lsp.config("qmlls",{
+		-- 	capabilities = capabilities,
+		-- })
 
 		-- emmet_language_server
-
-		lspconfig.emmet_language_server.setup({
+		vim.lsp.enable("emmet_language_server")
+		vim.lsp.config("emmet_language_server", {
 			capabilities = capabilities,
 			filetypes = {
 				"css",
@@ -174,12 +187,15 @@ return {
 		})
 
 		-- denols
-		lspconfig.denols.setup({
+		vim.lsp.enable("denols")
+		vim.lsp.config("denols", {
 			capabilities = capabilities,
-			root_dir = lspconfig.util.root_pattern("deno.json", "deno.jsonc"),
+			root_dir = vim.fs.dirname(vim.fs.find({ "deno.json", "deno.jsonc" }, { upward = true })[1]),
 		})
 
-		lspconfig.clangd.setup({
+		-- clangd
+		vim.lsp.enable("clangd")
+		vim.lsp.config("clangd", {
 			capabilities = capabilities,
 			settings = {
 				clangd = {
@@ -229,7 +245,14 @@ return {
 		-- ts_ls (replaces tsserver)
 
 		-- vim.lsp.config("basedpyright", {
-		lspconfig.basedpyright.setup({
+		vim.lsp.enable("hyprls")
+		vim.lsp.config("hyprls", {
+			capabilities = capabilities,
+		})
+
+		-- basedpyright
+		vim.lsp.enable("basedpyright")
+		vim.lsp.config("basedpyright", {
 			capabilities = capabilities,
 			settings = {
 				basedpyright = {
@@ -244,10 +267,13 @@ return {
 				},
 			},
 		})
-		lspconfig.ts_ls.setup({
+
+		-- ts_ls (replaces tsserver)
+		vim.lsp.enable("ts_ls")
+		vim.lsp.config("ts_ls", {
 			capabilities = capabilities,
 			root_dir = function(fname)
-				local util = lspconfig.util
+				local util = require("lspconfig").util
 				return not util.root_pattern("deno.json", "deno.jsonc")(fname)
 					and util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git")(fname)
 			end,
@@ -260,58 +286,13 @@ return {
 			},
 		})
 
-		-- HACK: If using Blink.cmp Configure all LSPs here
+		-- vim.lsp.enable("gopls")
+		-- vim.lsp.config("gopls",{ capabilities = capabilities })
+		-- vim.lsp.enable("html")
+		-- vim.lsp.config("html",{ capabilities = capabilities })
+		-- vim.lsp.enable("cssls")
+		-- vim.lsp.config("cssls",{ capabilities = capabilities })
 
-		-- ( comment the ones in mason )
-		-- local lspconfig = require("lspconfig")
-		-- local capabilities = require("blink.cmp").get_lsp_capabilities() -- Import capabilities from blink.cmp
-
-		-- Configure lua_ls
-		-- lspconfig.lua_ls.setup({
-		--     capabilities = capabilities,
-		--     settings = {
-		--         Lua = {
-		--             diagnostics = {
-		--                 globals = { "vim" },
-		--             },
-		--             completion = {
-		--                 callSnippet = "Replace",
-		--             },
-		--             workspace = {
-		--                 library = {
-		--                     [vim.fn.expand("$VIMRUNTIME/lua")] = true,
-		--                     [vim.fn.stdpath("config") .. "/lua"] = true,
-		--                 },
-		--             },
-		--         },
-		--     },
-		-- })
-		--
-		-- -- Configure tsserver (TypeScript and JavaScript)
-		-- lspconfig.ts_ls.setup({
-		--     capabilities = capabilities,
-		--     root_dir = function(fname)
-		--         local util = lspconfig.util
-		--         return not util.root_pattern('deno.json', 'deno.jsonc')(fname)
-		--             and util.root_pattern('tsconfig.json', 'package.json', 'jsconfig.json', '.git')(fname)
-		--     end,
-		--     single_file_support = false,
-		--     on_attach = function(client, bufnr)
-		--         -- Disable formatting if you're using a separate formatter like Prettier
-		--         client.server_capabilities.documentFormattingProvider = false
-		--     end,
-		--     init_options = {
-		--         preferences = {
-		--             includeCompletionsWithSnippetText = true,
-		--             includeCompletionsForImportStatements = true,
-		--         },
-		--     },
-		-- })
-
-		-- Add other LSP servers as needed, e.g., gopls, eslint, html, etc.
-		-- lspconfig.gopls.setup({ capabilities = capabilities })
-		-- lspconfig.html.setup({ capabilities = capabilities })
-		-- lspconfig.cssls.setup({ capabilities = capabilities })
 		vim.lsp.inlay_hint.enable(true)
 		vim.keymap.set(
 			"n",
