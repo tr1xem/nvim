@@ -293,6 +293,7 @@ return {
 		-- vim.lsp.enable("cssls")
 		-- vim.lsp.config("cssls",{ capabilities = capabilities })
 
+		vim.lsp.enable("csharp_ls")
 		vim.lsp.inlay_hint.enable(true)
 		vim.keymap.set(
 			"n",
