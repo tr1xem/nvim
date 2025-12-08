@@ -41,6 +41,8 @@ return {
 				liquid = { "prettier" },
 				scss = { "prettier" },
 				lua = { "stylua" },
+				elixir = { "mix" },
+				heex = { "mix" },
 				python = {
 					"ruff_format",
 					"ruff_fix",
@@ -49,6 +51,7 @@ return {
 
 				markdown = { "prettier", "markdown-toc" },
 				["markdown.mdx"] = { "prettier", "markdownlint", "markdown-toc" },
+				go = { "gofumpt" },
 			},
 			format_on_save = {
 				lsp_fallback = true,

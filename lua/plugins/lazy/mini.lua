@@ -27,8 +27,10 @@ return {
 		-- require("mini.icons").setup()
 		require("mini.snippets").setup()
 		require("mini.diff").setup()
+
+		-- require("mini.indentscope").setup()
 		-- require("mini.tabline").setup()
-		vim.keymap.set("n", "<leader>cw", function()
+		vim.keymap.set("n", "<leader>rws", function()
 			require("mini.trailspace").trim()
 		end, { desc = "Erase Whitespace" })
 	end,

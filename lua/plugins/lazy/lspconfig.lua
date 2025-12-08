@@ -268,6 +268,7 @@ return {
 			},
 		})
 
+		vim.lsp.enable("gopls")
 		-- ts_ls (replaces tsserver)
 		vim.lsp.enable("ts_ls")
 		vim.lsp.config("ts_ls", {
@@ -294,6 +295,8 @@ return {
 		-- vim.lsp.config("cssls",{ capabilities = capabilities })
 
 		vim.lsp.enable("csharp_ls")
+		vim.lsp.enable("elixirls")
+		vim.lsp.enable("tailwindcss")
 		vim.lsp.inlay_hint.enable(true)
 		vim.keymap.set(
 			"n",
