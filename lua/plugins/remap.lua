@@ -55,6 +55,3 @@ vim.api.nvim_set_keymap("v", "<Left>", "<Nop>", { noremap = true, silent = true 
 vim.api.nvim_set_keymap("v", "<Right>", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>")
 vim.keymap.set("n", "<M-k>", "<cd> cprey<CR>")
-vim.keymap.set("i", "<C-L>", "<Nop>", { noremap = true, silent = true })
-vim.keymap.set("v", "<C-L>", "<Nop>", { noremap = true, silent = true })
-vim.keymap.set("n", "<C-L>", "<Nop>", { noremap = true, silent = true })

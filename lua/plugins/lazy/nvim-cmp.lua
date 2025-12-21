@@ -281,10 +281,10 @@ return {
 				end, { "i", "s" }),
 				["<Tab>"] = cmp.mapping(function(fallback)
 					-- Always prioritize snippet navigation first, even in comments
-					if has_luasnip and luasnip.expand_or_locally_jumpable() then
-						luasnip.expand_or_jump()
-					elseif require("supermaven-nvim.completion_preview").has_suggestion() then
+					if require("supermaven-nvim.completion_preview").has_suggestion() then
 						require("supermaven-nvim.completion_preview").on_accept_suggestion()
+					elseif has_luasnip and luasnip.expand_or_locally_jumpable() then
+						luasnip.expand_or_jump()
 					else
 						fallback()
 					end

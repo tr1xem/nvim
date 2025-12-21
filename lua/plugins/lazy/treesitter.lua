@@ -2,6 +2,11 @@ return {
 	{
 		"nvim-treesitter/nvim-treesitter",
 		event = { "BufReadPre", "BufNewFile" },
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			"nvim-treesitter/nvim-treesitter-refactor",
+			-- "nvim-treesitter/nvim-treesitter-context",
+		},
 		build = ":TSUpdate",
 		config = function()
 			-- import nvim-treesitter plugin

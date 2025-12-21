@@ -33,7 +33,7 @@ return {
 				c = { "clang_format" },
 				cs = { "clang_format" },
 				cpp = { "clang_format" },
-				html = { "prettier" },
+				-- html = { "prettier" },
 				svelte = { "prettier" },
 				json = { "prettier" },
 				yaml = { "prettier" },
