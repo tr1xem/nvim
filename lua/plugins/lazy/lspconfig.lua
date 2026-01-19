@@ -297,6 +297,7 @@ return {
 		vim.lsp.enable("csharp_ls")
 		vim.lsp.enable("elixirls")
 		vim.lsp.enable("tailwindcss")
+		vim.lsp.enable("cmake-language-server")
 		vim.lsp.inlay_hint.enable(true)
 		vim.keymap.set(
 			"n",

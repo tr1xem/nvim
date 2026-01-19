@@ -1,6 +1,14 @@
 -- Key mappings
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
-
+-- Column Width
+vim.opt.colorcolumn = "81"
+-- Disable colorcolumn for oil buffers
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = "oil",
+	callback = function()
+		vim.opt_local.colorcolumn = ""
+	end,
+})
 -- Plugin configurations
 require("plugins.set") -- General settings
 require("plugins.remap") -- Key mappings
@@ -10,7 +18,7 @@ require("plugins.lazy_init") -- Lazy.nvim setup
 -- require("mini.tabline").setup()
 
 -- Disable color column
-vim.opt.colorcolumn = ""
+-- vim.opt.colorcolumn = ""
 
 -- Autocommands
 local augroup = vim.api.nvim_create_augroup
@@ -49,28 +57,24 @@ end)
 -- Colorscheme
 vim.cmd("colorscheme tokyonight")
 
--- Cord setup
-require("cord").setup({
-	display = {},
-	buttons = {
-		{
-			label = function(opts)
-				return opts.repo_url and "View Repository"
-			end,
-			url = function(opts)
-				return opts.repo_url
-			end,
-		},
-	},
-})
+-- -- Cord setup
+-- require("cord").setup({
+-- 	display = {},
+-- 	buttons = {
+-- 		{
+-- 			label = function(opts)
+-- 				return opts.repo_url and "View Repository"
+-- 			end,
+-- 			url = function(opts)
+-- 				return opts.repo_url
+-- 			end,
+-- 		},
+-- 	},
+-- })
 
 -- Conform setup
-require("conform").setup({
-	format_on_save = {
-		timeout_ms = 5000,
-		lsp_format = "fallback",
-	},
-})
+-- require("conform").setup({
+-- })
 
 -- Diagnostic signs
 vim.diagnostic.config({
@@ -83,9 +87,10 @@ vim.diagnostic.config({
 		},
 	},
 })
-require("notify").setup({
-	background_colour = "#000000",
-})
+
+-- require("notify").setup({
+-- 	background_colour = "#000000",
+-- })
 
 -- Run trim on save
 vim.api.nvim_create_autocmd("BufWritePre", {

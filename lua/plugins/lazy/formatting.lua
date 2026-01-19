@@ -52,6 +52,7 @@ return {
 				markdown = { "prettier", "markdown-toc" },
 				["markdown.mdx"] = { "prettier", "markdownlint", "markdown-toc" },
 				go = { "gofumpt" },
+				cmake = { "cmake_format" },
 			},
 			format_on_save = {
 				lsp_fallback = true,

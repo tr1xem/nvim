@@ -1,5 +1,4 @@
 vim.opt.guicursor = ""
--- test
 vim.opt.nu = true
 vim.opt.relativenumber = true
 
@@ -33,6 +32,6 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 vim.opt.showmode = false
 vim.opt.ignorecase = true
-vim.diagnostic.config({
-	virtual_text = false,
-})
+-- vim.diagnostic.config({
+-- 	virtual_text = false,
+-- })
