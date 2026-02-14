@@ -1,15 +1,14 @@
 return {
 	"neovim/nvim-lspconfig",
-	event = { "BufReadPre", "BufNewFile" },
+	event = "User FilePost",
 	dependencies = {
 		"hrsh7th/cmp-nvim-lsp",
-		-- "saghen/blink.cmp",
-		{ "antosha417/nvim-lsp-file-operations", config = true },
 		"p00f/clangd_extensions.nvim",
 	},
 	config = function()
 		-- NOTE: LSP Keybinds
 
+		dofile(vim.g.base46_cache .. "lsp")
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
@@ -39,6 +38,7 @@ return {
 
 				opts.desc = "See available code actions"
 				vim.keymap.set("n", "<leader>vca", "<cmd>Lspsaga code_action<CR>", opts)
+				-- vim.keymap.set({ "n", "v" }, "<leader>vca", vim.lsp.buf.code_action, opts)
 
 				opts.desc = "Smart rename"
 				vim.keymap.set("n", "<leader>vrn", "<cmd>Lspsaga rename<CR>", opts)
@@ -52,10 +52,21 @@ return {
 
 				opts.desc = "Show documentation for what is under cursor"
 				-- vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
-				vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
+				vim.keymap.set("n", "K", function()
+					local winid = require("ufo").peekFoldedLinesUnderCursor()
+					if not winid then
+						vim.cmd("Lspsaga hover_doc")
+						-- vim.lsp.buf.hover()
+					end
+				end, opts)
 
 				opts.desc = "Restart LSP"
 				vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
+
+				opts.desc = "Open all folds"
+				vim.keymap.set("n", "cuf", require("ufo").openAllFolds, opts)
+				opts.desc = "Close all folds"
+				vim.keymap.set("n", "cf", require("ufo").closeAllFolds, opts)
 
 				-- opts.desc = "Signature help"
 				-- vim.keymap.set("i", "<C-h>", "<cmd>Lspsaga signature_help<CR>", opts)
@@ -67,45 +78,29 @@ return {
 			end,
 		})
 
-		-- NOTE : Moved all this to Mason including local variables
-		-- used to enable autocompletion (assign to every lsp server config)
-		-- local capabilities = cmp_nvim_lsp.default_capabilities()
-		-- Change the Diagnostic symbols in the sign column (gutter)
+		local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-		-- Define sign icons for each severity
-		local signs = {
-			[vim.diagnostic.severity.ERROR] = " ",
-			[vim.diagnostic.severity.WARN] = " ",
-			[vim.diagnostic.severity.HINT] = "󰠠 ",
-			[vim.diagnostic.severity.INFO] = " ",
-		}
-
-		-- Set the diagnostic config with all icons
-		vim.diagnostic.config({
-			signs = {
-				text = signs, -- Enable signs in the gutter
+		capabilities.textDocument.completion.completionItem = {
+			documentationFormat = { "markdown", "plaintext" },
+			snippetSupport = true,
+			preselectSupport = true,
+			insertReplaceSupport = true,
+			labelDetailsSupport = true,
+			deprecatedSupport = true,
+			commitCharactersSupport = true,
+			tagSupport = { valueSet = { 1 } },
+			resolveSupport = {
+				properties = {
+					"documentation",
+					"detail",
+					"additionalTextEdits",
+				},
 			},
-			virtual_text = true, -- Specify Enable virtual text for diagnostics
-			underline = true, -- Specify Underline diagnostics
-			update_in_insert = false, -- Keep diagnostics active in insert mode
-		})
-
-		-- NOTE :
-		-- Moved back from mason_lspconfig.setup_handlers from mason.lua file
-		-- as mason setup_handlers is deprecated & its causing issues with lsp settings
-		--
-		-- Setup servers
-		-- local lspconfig = require("lspconfig")
-		local cmp_nvim_lsp = require("cmp_nvim_lsp")
-		-- local capabilities = cmp_nvim_lsp.default_capabilities()
-		-- NOTE: For blink.cmp
-		-- local capabilities = require("blink.cmp").get_lsp_capabilities() -- Import capabilities from blink.cmp
-		local capabilities = vim.tbl_deep_extend(
-			"force",
-			{},
-			vim.lsp.protocol.make_client_capabilities(),
-			cmp_nvim_lsp.default_capabilities()
-		)
+		}
+		capabilities.textDocument.foldingRange = {
+			dynamicRegistration = false,
+			lineFoldingOnly = true,
+		}
 
 		-- perlnavigator
 		vim.lsp.enable("perlnavigator")

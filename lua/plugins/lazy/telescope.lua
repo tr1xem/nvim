@@ -4,8 +4,10 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-fzf-native.nvim",
+			"debugloop/telescope-undo.nvim",
 		},
 		config = function()
+			require("telescope").load_extension("undo")
 			local telescope = require("telescope")
 			local builtin = require("telescope.builtin")
 
@@ -17,28 +19,39 @@ return {
 
 			telescope.load_extension("fzf")
 
-			local keymap = vim.keymap.set
+			local map = vim.keymap.set
 
 			-- File pickers
-			keymap("n", "<leader>pf", builtin.find_files, { desc = "Find files" })
-			keymap("n", "<C-p>", builtin.git_files, { desc = "Git files" })
+			map("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
+			map("n", "<C-f>", builtin.git_files, { desc = "Git files" })
 
 			-- Grep pickers
-			keymap("n", "<leader>pws", function()
-				builtin.grep_string({ search = vim.fn.expand("<cword>") })
-			end, { desc = "Grep current word" })
+			map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
+			map(
+				"n",
+				"<leader>fz",
+				"<cmd>Telescope current_buffer_fuzzy_find<CR>",
+				{ desc = "telescope find in current buffer" }
+			)
+			map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
+			-- map("n", "<leader>fw", function()
+			-- 	builtin.grep_string({ search = vim.fn.expand("<cword>") })
+			-- end, { desc = "Grep current word" })
+			--
+			-- map("n", "<leader>fW", function()
+			-- 	builtin.grep_string({ search = vim.fn.expand("<cWORD>") })
+			-- end, { desc = "Grep WORD under cursor" })
 
-			keymap("n", "<leader>pWs", function()
-				builtin.grep_string({ search = vim.fn.expand("<cWORD>") })
-			end, { desc = "Grep WORD under cursor" })
-
-			keymap("n", "<leader>ps", function()
-				builtin.grep_string({ search = vim.fn.input("Grep > ") })
-			end, { desc = "Grep user input" })
+			map("n", "<leader>fu", telescope.extensions.undo.undo, { desc = "undo" })
+			map("n", "<leader>fus", function()
+				telescope.extensions.undo.undo({ saved_only = true })
+			end, { desc = "saved" })
+			map("n", "<leader>f:", builtin.command_history, { desc = "command history" })
+			map("n", "<leader>f/", builtin.search_history, { desc = "search history" })
 
 			-- Help and buffers
-			keymap("n", "<leader>vh", builtin.help_tags, { desc = "Help tags" })
-			keymap("n", "<leader>b", function()
+			map("n", "<leader>fvh", builtin.help_tags, { desc = "Help tags" })
+			map("n", "<leader>fb", function()
 				builtin.buffers({
 					sort_mru = true,
 					ignore_current_buffer = true,
@@ -46,14 +59,14 @@ return {
 			end, { desc = "Buffers (MRU)" })
 
 			-- LSP references
-			keymap({ "n", "v" }, "<leader>sr", builtin.lsp_references, {
+			map({ "n", "v" }, "<leader>fr", builtin.lsp_references, {
 				silent = true,
 				noremap = true,
 				desc = "LSP References",
 			})
 
 			-- Config files
-			keymap("n", "<space>en", function()
+			map("n", "<space>fc", function()
 				builtin.find_files({ cwd = vim.fn.stdpath("config") })
 			end, { desc = "Find config files" })
 		end,

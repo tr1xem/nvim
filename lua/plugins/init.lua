@@ -2,6 +2,7 @@
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
 -- Column Width
 vim.opt.colorcolumn = "81"
+-- vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#011423" })
 -- Disable colorcolumn for oil buffers
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "oil",
@@ -16,9 +17,6 @@ require("plugins.lazy_init") -- Lazy.nvim setup
 
 -- Mini tabline setup
 -- require("mini.tabline").setup()
-
--- Disable color column
--- vim.opt.colorcolumn = ""
 
 -- Autocommands
 local augroup = vim.api.nvim_create_augroup
@@ -55,7 +53,7 @@ vim.keymap.set("n", "<leader>st", function()
 end)
 
 -- Colorscheme
-vim.cmd("colorscheme tokyonight")
+-- vim.cmd("colorscheme tokyonight")
 
 -- -- Cord setup
 -- require("cord").setup({

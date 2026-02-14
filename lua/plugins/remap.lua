@@ -55,3 +55,28 @@ vim.api.nvim_set_keymap("v", "<Left>", "<Nop>", { noremap = true, silent = true 
 vim.api.nvim_set_keymap("v", "<Right>", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set("n", "<M-j>", "<cmd>cnext<CR>")
 vim.keymap.set("n", "<M-k>", "<cd> cprey<CR>")
+
+vim.keymap.set("n", "<leader>ct", function()
+	require("nvchad.themes").open()
+end, { desc = "telescope nvchad themes" })
+vim.keymap.set("t", "<C-x>", "<C-\\><C-N>", { desc = "terminal escape terminal mode" })
+vim.keymap.set("n", "<leader>th", function()
+	require("nvchad.term").new({ pos = "sp" })
+end, { desc = "terminal new horizontal term" })
+
+vim.keymap.set("n", "<leader>tv", function()
+	require("nvchad.term").new({ pos = "vsp" })
+end, { desc = "terminal new vertical term" })
+
+-- toggleable
+vim.keymap.set({ "n", "t" }, "<A-v>", function()
+	require("nvchad.term").toggle({ pos = "vsp", id = "vtoggleTerm" })
+end, { desc = "terminal toggleable vertical term" })
+
+vim.keymap.set({ "n", "t" }, "<A-t>", function()
+	require("nvchad.term").toggle({ pos = "sp", id = "htoggleTerm" })
+end, { desc = "terminal toggleable horizontal term" })
+
+vim.keymap.set({ "n", "t" }, "<A-f>", function()
+	require("nvchad.term").toggle({ pos = "float", id = "floatTerm" })
+end, { desc = "terminal toggle floating term" })
