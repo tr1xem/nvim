@@ -50,7 +50,7 @@ return {
 			map("n", "<leader>f/", builtin.search_history, { desc = "search history" })
 
 			-- Help and buffers
-			map("n", "<leader>fvh", builtin.help_tags, { desc = "Help tags" })
+			map("n", "<leader>vh", builtin.help_tags, { desc = "Help tags" })
 			map("n", "<leader>fb", function()
 				builtin.buffers({
 					sort_mru = true,

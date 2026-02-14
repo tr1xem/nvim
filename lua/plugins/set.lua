@@ -32,9 +32,9 @@ vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 vim.opt.showmode = false
 vim.opt.ignorecase = true
--- vim.diagnostic.config({
--- 	virtual_text = false,
--- })
+vim.diagnostic.config({
+	virtual_text = true,
+})
 -- UFO
 vim.o.foldcolumn = "1" -- '0' is not bad
 vim.o.foldlevelstart = 99
