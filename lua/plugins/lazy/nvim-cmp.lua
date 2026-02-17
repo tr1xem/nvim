@@ -123,8 +123,8 @@ return {
 
 				sources = {
 					{ name = "async_path" },
-					{ name = "supermaven" },
 					{ name = "nvim_lsp" },
+					{ name = "supermaven" },
 					{ name = "luasnip" },
 					{ name = "buffer" },
 					{ name = "nvim_lua" },

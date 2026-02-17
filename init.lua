@@ -1,5 +1,6 @@
+vim.g.base46_cache = vim.fn.stdpath("data") .. "/base46_cache/"
 require("plugins")
 require("plugins.custom.linkhelper")
 require("chadrc")
--- vim.o.guifont = "JetBrainsMono Nerd Font:h10"
 dofile(vim.g.base46_cache .. "defaults")
+-- vim.o.guifont = "JetBrainsMono Nerd Font:h10"

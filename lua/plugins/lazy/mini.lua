@@ -3,6 +3,9 @@ return {
 	config = function()
 		require("mini.ai").setup()
 		require("mini.surround").setup()
+		-- require("mini.cmdline").setup({
+		-- 	autocomplete = { enabled = false },
+		-- })
 		require("mini.comment").setup()
 		require("mini.move").setup({
 			-- Module mappings. Use `''` (empty string) to disable one.
