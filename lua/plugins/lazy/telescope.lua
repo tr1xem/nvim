@@ -23,7 +23,7 @@ return {
 
 			-- File pickers
 			map("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
-			map("n", "<C-f>", builtin.git_files, { desc = "Git files" })
+			map("n", "<C-p>", builtin.git_files, { desc = "Git files" })
 
 			-- Grep pickers
 			map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })

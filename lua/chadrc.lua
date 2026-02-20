@@ -2,7 +2,7 @@ local options = {
 	base46 = {
 		theme = "tokyonight",
 		transparency = false,
-		theme_toggle = { "tokyonight", "tokyodark" },
+		theme_toggle = { "tokyonight", "vscode_light" },
 	},
 	nvdash = {
 		load_on_startup = true,
@@ -72,7 +72,7 @@ local options = {
 			modules = nil,
 		},
 		telescope = { style = "bordered" }, -- borderless / bordered
-		lsp = { signature = true },
+
 		-- lazyload it when there are 1+ buffers
 		tabufline = {
 			enabled = true,
@@ -82,29 +82,32 @@ local options = {
 			modules = nil,
 			bufwidth = 21,
 		},
-		term = {
-			startinsert = true,
-			base46_colors = true,
-			winopts = { number = false, relativenumber = false },
-			sizes = { sp = 0.3, vsp = 0.2, ["bo sp"] = 0.3, ["bo vsp"] = 0.2 },
-			float = {
-				relative = "editor",
-				row = 0.3,
-				col = 0.25,
-				width = 0.5,
-				height = 0.4,
-				border = "single",
-			},
-		},
+	},
 
-		mason = { pkgs = {}, skip = {} },
+	lsp = { signature = true },
 
-		colorify = {
-			enabled = true,
-			mode = "virtual", -- fg, bg, virtual
-			virt_text = "󱓻 ",
-			highlight = { hex = true, lspvars = true },
+	term = {
+		startinsert = true,
+		base46_colors = true,
+		winopts = { number = false, relativenumber = false },
+		sizes = { sp = 0.3, vsp = 0.2, ["bo sp"] = 0.3, ["bo vsp"] = 0.2 },
+		float = {
+			relative = "editor",
+			row = 0.3,
+			col = 0.25,
+			width = 0.5,
+			height = 0.4,
+			border = "single",
 		},
+	},
+
+	mason = { pkgs = {}, skip = {} },
+
+	colorify = {
+		enabled = false,
+		mode = "virtual", -- fg, bg, virtual
+		virt_text = "󱓻 ",
+		highlight = { hex = true, lspvars = true },
 	},
 }
 local status, chadrc = pcall(require, "chadrc")

@@ -24,7 +24,7 @@ return {
 			},
 		})
 		-- require("mini.clue").setup()
-		-- require("mini.pairs").setup()
+		require("mini.pairs").setup()
 		require("mini.trailspace").setup()
 		-- require("mini.extra").setup()
 		-- require("mini.icons").setup()

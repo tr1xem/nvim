@@ -63,20 +63,167 @@ return {
 				opts.desc = "Restart LSP"
 				vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
-				opts.desc = "Open all folds"
-				vim.keymap.set("n", "cuf", require("ufo").openAllFolds, opts)
-				opts.desc = "Close all folds"
-				vim.keymap.set("n", "cf", require("ufo").closeAllFolds, opts)
-
-				-- opts.desc = "Signature help"
-				-- vim.keymap.set("i", "<C-h>", "<cmd>Lspsaga signature_help<CR>", opts)
-
 				opts.desc = "Jump to prev diagnostic"
 				vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
+
 				opts.desc = "Jump to next diagnostic"
 				vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
 			end,
 		})
+
+		vim.keymap.set("n", "cuf", require("ufo").openAllFolds, { desc = "Open all folds" })
+
+		vim.keymap.set("n", "cf", require("ufo").closeAllFolds, { desc = "Close all folds" })
+
+		vim.keymap.set(
+			"n",
+			"<leader>ch",
+			"<cmd>ClangdSwitchSourceHeader<cr>",
+			{ desc = "Switch Source/Header (C/C++)" }
+		)
+		local servers = {
+			csharp_ls = {},
+			elixirls = {},
+			tailwindcss = {},
+			cmake_language_server = {},
+			bashls = {},
+			perlnavigator = {},
+			hyprls = {},
+			-- gopls = {},
+			lua_ls = {
+				settings = {
+					Lua = {
+						diagnostics = {
+							globals = { "vim" },
+						},
+						completion = {
+							callSnippet = "Replace",
+						},
+						workspace = {
+							library = {
+								[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+								[vim.fn.stdpath("config") .. "/lua"] = true,
+							},
+						},
+					},
+				},
+			},
+
+			emmet_ls = {
+				filetypes = {
+					"html",
+					"typescriptreact",
+					"javascriptreact",
+					"css",
+					"sass",
+					"scss",
+					"less",
+					"svelte",
+				},
+			},
+			emmet_language_server = {
+				filetypes = {
+					"css",
+					"eruby",
+					"html",
+					"javascript",
+					"javascriptreact",
+					"less",
+					"sass",
+					"scss",
+					"pug",
+					"typescriptreact",
+				},
+				init_options = {
+					includeLanguages = {},
+					excludeLanguages = {},
+					extensionsPath = {},
+					preferences = {},
+					showAbbreviationSuggestions = true,
+					showExpandedAbbreviation = "always",
+					showSuggestionsAsSnippets = false,
+					syntaxProfiles = {},
+					variables = {},
+				},
+			},
+
+			denols = {
+				root_dir = vim.fs.dirname(vim.fs.find({ "deno.json", "deno.jsonc" }, { upward = true })[1]),
+			},
+			clangd = {
+				cmd = {
+					"clangd",
+					"--background-index",
+					"--clang-tidy",
+				},
+			},
+			basedpyright = {
+				settings = {
+					basedpyright = {
+						inlayHints = true,
+						disableOrganizeImports = true,
+						analysis = {
+							-- Ignore all files for analysis to exclusively use Ruff for linting
+							-- Enable diagnostics
+							-- ignore = { "*" },
+							typeCheckingMode = "basic",
+						},
+					},
+				},
+			},
+			ts_ls = {
+				root_dir = function(fname)
+					local util = require("lspconfig").util
+					return not util.root_pattern("deno.json", "deno.jsonc")(fname)
+						and util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git")(fname)
+				end,
+				single_file_support = false,
+				init_options = {
+					preferences = {
+						includeCompletionsWithSnippetText = true,
+						includeCompletionsForImportStatements = true,
+					},
+				},
+			},
+			-- pylsp = {
+			-- 	settings = {
+			-- 		pylsp = {
+			-- 			signature = {
+			-- 				formatter = "ruff",
+			-- 			},
+			-- 			plugins = {
+			-- 				rope_autoimport = {
+			-- 					enabled = false,
+			-- 					-- 	memory = true,
+			-- 					completions = {
+			-- 						enabled = true,
+			-- 					},
+			-- 					code_actions = {
+			-- 						enabled = true,
+			-- 					},
+			-- 				},
+			-- 				-- pylsp_mypy = { enabled = true },
+			-- 				pylsp_ruff = { enabled = true },
+			-- 			},
+			-- 		},
+			-- 	},
+			-- },
+			-- pyright = {
+			-- 	settings = {
+			-- 		pyright = {
+			-- 			inlayHints = true,
+			-- 			-- Using Ruff's import organizer
+			-- 			disableOrganizeImports = true,
+			-- 		},
+			-- 		python = {
+			-- 			analysis = {
+			-- 				ignore = { "*" },
+			-- 			},
+			-- 		},
+			-- 	},
+			-- },
+			-- qmlls = {},
+		}
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 
@@ -102,203 +249,15 @@ return {
 			lineFoldingOnly = true,
 		}
 
-		-- perlnavigator
-		vim.lsp.enable("perlnavigator")
-		vim.lsp.config("perlnavigator", {
-			capabilities = capabilities,
-		})
+		for name, opts in pairs(servers) do
+			opts.capabilities = capabilities
+			vim.lsp.config(name, opts)
+			vim.lsp.enable(name)
+		end
 
-		-- lua_ls
-		vim.lsp.enable("lua_ls")
-		vim.lsp.config("lua_ls", {
-			capabilities = capabilities,
-			settings = {
-				Lua = {
-					diagnostics = {
-						globals = { "vim" },
-					},
-					completion = {
-						callSnippet = "Replace",
-					},
-					workspace = {
-						library = {
-							[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-							[vim.fn.stdpath("config") .. "/lua"] = true,
-						},
-					},
-				},
-			},
-		})
-
-		-- emmet_ls
-		vim.lsp.enable("emmet_ls")
-		vim.lsp.config("emmet_ls", {
-			capabilities = capabilities,
-			filetypes = {
-				"html",
-				"typescriptreact",
-				"javascriptreact",
-				"css",
-				"sass",
-				"scss",
-				"less",
-				"svelte",
-			},
-		})
-
-		-- qmljs
-		-- vim.lsp.enable("qmlls")
-		-- vim.lsp.config("qmlls",{
-		-- 	capabilities = capabilities,
-		-- })
-
-		-- emmet_language_server
-		vim.lsp.enable("emmet_language_server")
-		vim.lsp.config("emmet_language_server", {
-			capabilities = capabilities,
-			filetypes = {
-				"css",
-				"eruby",
-				"html",
-				"javascript",
-				"javascriptreact",
-				"less",
-				"sass",
-				"scss",
-				"pug",
-				"typescriptreact",
-			},
-			init_options = {
-				includeLanguages = {},
-				excludeLanguages = {},
-				extensionsPath = {},
-				preferences = {},
-				showAbbreviationSuggestions = true,
-				showExpandedAbbreviation = "always",
-				showSuggestionsAsSnippets = false,
-				syntaxProfiles = {},
-				variables = {},
-			},
-		})
-
-		-- denols
-		vim.lsp.enable("denols")
-		vim.lsp.config("denols", {
-			capabilities = capabilities,
-			root_dir = vim.fs.dirname(vim.fs.find({ "deno.json", "deno.jsonc" }, { upward = true })[1]),
-		})
-
-		-- clangd
-		vim.lsp.enable("clangd")
-		vim.lsp.config("clangd", {
-			capabilities = capabilities,
-			settings = {
-				clangd = {
-					fallbackFlags = { "-std=c++23", "-Wall", "-Wextra", "-Wunused-variable", "-fanalyzer" },
-				},
-			},
-		})
-		-- vim.lsp.config("pyright", {
-		-- 	settings = {
-		-- 		pyright = {
-		-- 			inlayHints = true,
-		-- 			-- Using Ruff's import organizer
-		-- 			disableOrganizeImports = true,
-		-- 		},
-		-- 		python = {
-		-- 			analysis = {
-		-- 				ignore = { "*" },
-		-- 			},
-		-- 		},
-		-- 	},
-		-- })
-		-- vim.lsp.config("pylsp", {
-		-- 	settings = {
-		-- 		pylsp = {
-		-- 			signature = {
-		-- 				formatter = "ruff",
-		-- 			},
-		-- 			plugins = {
-		-- 				rope_autoimport = {
-		-- 					enabled = false,
-		-- 					-- 	memory = true,
-		-- 					completions = {
-		-- 						enabled = true,
-		-- 					},
-		-- 					code_actions = {
-		-- 						enabled = true,
-		-- 					},
-		-- 				},
-		-- 				-- pylsp_mypy = { enabled = true },
-		-- 				pylsp_ruff = { enabled = true },
-		-- 			},
-		-- 		},
-		-- 	},
-		-- })
-		-- vim.lsp.enable("pylsp")
-		-- vim.lsp.enable("pyright")
-		-- ts_ls (replaces tsserver)
-
-		-- vim.lsp.config("basedpyright", {
-		vim.lsp.enable("hyprls")
-		vim.lsp.config("hyprls", {
-			capabilities = capabilities,
-		})
-
-		-- basedpyright
-		vim.lsp.enable("basedpyright")
-		vim.lsp.config("basedpyright", {
-			capabilities = capabilities,
-			settings = {
-				basedpyright = {
-					inlayHints = true,
-					disableOrganizeImports = true,
-					analysis = {
-						-- Ignore all files for analysis to exclusively use Ruff for linting
-						-- Enable diagnostics
-						-- ignore = { "*" },
-						typeCheckingMode = "basic",
-					},
-				},
-			},
-		})
-
-		vim.lsp.enable("gopls")
-		-- ts_ls (replaces tsserver)
-		vim.lsp.enable("ts_ls")
-		vim.lsp.config("ts_ls", {
-			capabilities = capabilities,
-			root_dir = function(fname)
-				local util = require("lspconfig").util
-				return not util.root_pattern("deno.json", "deno.jsonc")(fname)
-					and util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git")(fname)
-			end,
-			single_file_support = false,
-			init_options = {
-				preferences = {
-					includeCompletionsWithSnippetText = true,
-					includeCompletionsForImportStatements = true,
-				},
-			},
-		})
-
-		-- vim.lsp.enable("gopls")
-		-- vim.lsp.config("gopls",{ capabilities = capabilities })
-		-- vim.lsp.enable("html")
-		-- vim.lsp.config("html",{ capabilities = capabilities })
-		-- vim.lsp.enable("cssls")
-		-- vim.lsp.config("cssls",{ capabilities = capabilities })
-
-		vim.lsp.enable("csharp_ls")
-		vim.lsp.enable("elixirls")
-		vim.lsp.enable("tailwindcss")
-		vim.lsp.enable("cmake-language-server")
 		vim.lsp.inlay_hint.enable(true)
-		vim.keymap.set(
-			"n",
-			"<leader>ch",
-			"<cmd>ClangdSwitchSourceHeader<cr>",
-			{ desc = "Switch Source/Header (C/C++)" }
-		)
+		-- if you dont want to call the enable method in the loop, just pass a table.
+		-- vim.lsp.enable(vim.tbl_keys(servers))
+		-- vim.lsp.enable({"pyright", "clangd"})
 	end,
 }
