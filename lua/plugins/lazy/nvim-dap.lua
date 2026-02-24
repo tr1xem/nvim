@@ -7,6 +7,19 @@ return {
 		"theHamsta/nvim-dap-virtual-text",
 	},
 	config = function()
+		-- Signs
+		local signs = {
+			DapBreakpoint = { text = "", texthl = "DiagnosticError" },
+			DapBreakpointCondition = { text = "ﳁ", texthl = "DiagnosticWarn" },
+			DapBreakpointRejected = { text = "", texthl = "DiagnosticError" },
+			DapLogPoint = { text = "󰍩", texthl = "DiagnosticInfo" },
+			DapStopped = { text = "", texthl = "DiagnosticHint", linehl = "Visual" },
+		}
+
+		for name, sign in pairs(signs) do
+			vim.fn.sign_define(name, sign)
+		end
+		-- Config
 		require("mason-nvim-dap").setup({
 			ensure_installed = { "cppdbg" },
 			automatic_installation = true,

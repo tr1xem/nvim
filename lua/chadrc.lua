@@ -1,8 +1,8 @@
 local options = {
 	base46 = {
 		theme = "tokyonight",
-		transparency = false,
-		theme_toggle = { "tokyonight", "vscode_light" },
+		transparency = true,
+		theme_toggle = { "tokyonight", "rosepine" },
 	},
 	nvdash = {
 		load_on_startup = true,

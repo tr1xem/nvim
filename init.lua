@@ -3,4 +3,5 @@ require("plugins")
 require("plugins.custom.linkhelper")
 require("chadrc")
 dofile(vim.g.base46_cache .. "defaults")
+vim.o.winborder = "single"
 -- vim.o.guifont = "JetBrainsMono Nerd Font:h10"

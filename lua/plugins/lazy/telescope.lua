@@ -4,10 +4,8 @@ return {
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-fzf-native.nvim",
-			"debugloop/telescope-undo.nvim",
 		},
 		config = function()
-			require("telescope").load_extension("undo")
 			local telescope = require("telescope")
 			local builtin = require("telescope.builtin")
 
@@ -42,10 +40,6 @@ return {
 			-- 	builtin.grep_string({ search = vim.fn.expand("<cWORD>") })
 			-- end, { desc = "Grep WORD under cursor" })
 
-			map("n", "<leader>fu", telescope.extensions.undo.undo, { desc = "undo" })
-			map("n", "<leader>fus", function()
-				telescope.extensions.undo.undo({ saved_only = true })
-			end, { desc = "saved" })
 			map("n", "<leader>f:", builtin.command_history, { desc = "command history" })
 			map("n", "<leader>f/", builtin.search_history, { desc = "search history" })
 

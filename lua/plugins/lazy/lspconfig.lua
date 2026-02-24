@@ -52,14 +52,15 @@ return {
 
 				opts.desc = "Show documentation for what is under cursor"
 				-- vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
-				vim.keymap.set("n", "K", function()
-					local winid = require("ufo").peekFoldedLinesUnderCursor()
-					if not winid then
-						vim.cmd("Lspsaga hover_doc")
-						-- vim.lsp.buf.hover()
-					end
-				end, opts)
-
+				vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
+				-- vim.keymap.set("n", "K", function()
+				-- 	-- local winid = require("ufo").peekFoldedLinesUnderCursor()
+				-- 	-- if not winid then
+				-- 	vim.cmd("Lspsaga hover_doc")
+				-- 	-- vim.lsp.buf.hover()
+				-- 	-- end
+				-- end, opts)
+				--
 				opts.desc = "Restart LSP"
 				vim.keymap.set("n", "<leader>rs", ":LspRestart<CR>", opts) -- mapping to restart lsp if necessary
 
@@ -71,9 +72,9 @@ return {
 			end,
 		})
 
-		vim.keymap.set("n", "cuf", require("ufo").openAllFolds, { desc = "Open all folds" })
-
-		vim.keymap.set("n", "cf", require("ufo").closeAllFolds, { desc = "Close all folds" })
+		-- vim.keymap.set("n", "cuf", require("ufo").openAllFolds, { desc = "Open all folds" })
+		--
+		-- vim.keymap.set("n", "cf", require("ufo").closeAllFolds, { desc = "Close all folds" })
 
 		vim.keymap.set(
 			"n",
@@ -151,10 +152,32 @@ return {
 				root_dir = vim.fs.dirname(vim.fs.find({ "deno.json", "deno.jsonc" }, { upward = true })[1]),
 			},
 			clangd = {
+				root_markers = {
+					"compile_commands.json",
+					"compile_flags.txt",
+					"configure.ac", -- AutoTools
+					"Makefile",
+					"configure.ac",
+					"configure.in",
+					"config.h.in",
+					"meson.build",
+					"meson_options.txt",
+					"build.ninja",
+					".git",
+				},
+				init_options = {
+					usePlaceholders = true,
+					completeUnimported = true,
+					clangdFileStatus = true,
+				},
 				cmd = {
 					"clangd",
 					"--background-index",
 					"--clang-tidy",
+					"--header-insertion=iwyu",
+					"--completion-style=detailed",
+					"--function-arg-placeholders",
+					"--fallback-style=llvm",
 				},
 			},
 			basedpyright = {
