@@ -6,7 +6,7 @@ return {
 	config = function()
 		local todo_comments = require("todo-comments")
 
-		todo_comments.setup({
+		local settings = {
 			keywords = {
 				FIX = {
 					icon = " ", -- icon used for the sign, and in search results
@@ -15,13 +15,19 @@ return {
 					-- signs = false, -- configure signs for some keywords individually
 				},
 				TODO = { icon = " ", color = "info" },
-				HACK = { icon = " ", color = "warning", alt = { "DON SKIP" } },
+				HACK = { icon = " ", color = "warning" },
 				WARN = { icon = " ", color = "warning", alt = { "WARNING", "XXX" } },
 				PERF = { icon = " ", alt = { "OPTIM", "PERFORMANCE", "OPTIMIZE" } },
-				NOTE = { icon = " ", color = "hint", alt = { "INFO", "READ", "COLORS" } },
+				NOTE = { icon = " ", color = "hint", alt = { "INFO" } },
 				TEST = { icon = "⏲ ", color = "test", alt = { "TESTING", "PASSED", "FAILED" } },
 			},
-		})
+			highlight = {
+				exclude = {
+					"norg",
+				},
+			},
+		}
+		todo_comments.setup(settings)
 
 		-- keymaps
 		vim.keymap.set("n", "]t", function()

@@ -122,6 +122,7 @@ return {
 				},
 
 				sources = {
+					{ name = "neorg" },
 					{ name = "async_path" },
 					{ name = "nvim_lsp" },
 					{ name = "supermaven" },
