@@ -2,6 +2,17 @@ return {
 	{
 		"stevearc/oil.nvim",
 		dependencies = { "nvim-tree/nvim-web-devicons" },
+		keymaps = {
+			["<leader>p"] = function()
+				local oil = require("oil")
+				local filename = oil.get_cursor_entry().name
+				local dir = oil.get_current_dir()
+				oil.close()
+
+				local img_clip = require("img-clip")
+				img_clip.paste_image({}, dir .. filename)
+			end,
+		},
 		config = function()
 			-- CustomOilBar = function()
 			-- 	local path = vim.fn.expand("%")

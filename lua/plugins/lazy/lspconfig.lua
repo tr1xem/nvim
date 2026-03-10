@@ -90,7 +90,7 @@ return {
 			bashls = {},
 			perlnavigator = {},
 			hyprls = {},
-			-- gopls = {},
+			gopls = {},
 			lua_ls = {
 				settings = {
 					Lua = {

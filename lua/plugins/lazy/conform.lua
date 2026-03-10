@@ -51,7 +51,7 @@ return {
 
 				markdown = { "prettier", "markdown-toc" },
 				["markdown.mdx"] = { "prettier", "markdownlint", "markdown-toc" },
-				go = { "gofumpt" },
+				go = { "gofumpt", "goimports" },
 				cmake = { "cmake_format" },
 			},
 			format_on_save = {
