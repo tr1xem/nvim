@@ -72,10 +72,6 @@ return {
 			end,
 		})
 
-		-- vim.keymap.set("n", "cuf", require("ufo").openAllFolds, { desc = "Open all folds" })
-		--
-		-- vim.keymap.set("n", "cf", require("ufo").closeAllFolds, { desc = "Close all folds" })
-
 		vim.keymap.set(
 			"n",
 			"<leader>ch",
@@ -209,44 +205,48 @@ return {
 					},
 				},
 			},
-			-- pylsp = {
-			-- 	settings = {
-			-- 		pylsp = {
-			-- 			signature = {
-			-- 				formatter = "ruff",
-			-- 			},
-			-- 			plugins = {
-			-- 				rope_autoimport = {
-			-- 					enabled = false,
-			-- 					-- 	memory = true,
-			-- 					completions = {
-			-- 						enabled = true,
-			-- 					},
-			-- 					code_actions = {
-			-- 						enabled = true,
-			-- 					},
-			-- 				},
-			-- 				-- pylsp_mypy = { enabled = true },
-			-- 				pylsp_ruff = { enabled = true },
-			-- 			},
-			-- 		},
-			-- 	},
-			-- },
-			-- pyright = {
-			-- 	settings = {
-			-- 		pyright = {
-			-- 			inlayHints = true,
-			-- 			-- Using Ruff's import organizer
-			-- 			disableOrganizeImports = true,
-			-- 		},
-			-- 		python = {
-			-- 			analysis = {
-			-- 				ignore = { "*" },
-			-- 			},
-			-- 		},
-			-- 	},
-			-- },
-			-- qmlls = {},
+			pylsp = {
+				enabled = false,
+				settings = {
+					pylsp = {
+						signature = {
+							formatter = "ruff",
+						},
+						plugins = {
+							rope_autoimport = {
+								enabled = false,
+								-- 	memory = true,
+								completions = {
+									enabled = true,
+								},
+								code_actions = {
+									enabled = true,
+								},
+							},
+							-- pylsp_mypy = { enabled = true },
+							pylsp_ruff = { enabled = true },
+						},
+					},
+				},
+			},
+			pyright = {
+				enabled = false,
+				settings = {
+					pyright = {
+						inlayHints = true,
+						-- Using Ruff's import organizer
+						disableOrganizeImports = true,
+					},
+					python = {
+						analysis = {
+							ignore = { "*" },
+						},
+					},
+				},
+			},
+			qmlls = {
+				enabled = false,
+			},
 		}
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -276,7 +276,9 @@ return {
 		for name, opts in pairs(servers) do
 			opts.capabilities = capabilities
 			vim.lsp.config(name, opts)
-			vim.lsp.enable(name)
+			if opts.enabled ~= false then
+				vim.lsp.enable(name)
+			end
 		end
 
 		vim.lsp.inlay_hint.enable(true)
