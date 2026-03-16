@@ -174,6 +174,7 @@ return {
 					"clangd",
 					"--background-index",
 					"--clang-tidy",
+					"--j=" .. (vim.fn.system({ "nproc" }) - 1),
 					"--header-insertion=iwyu",
 					"--completion-style=detailed",
 					"--function-arg-placeholders",
