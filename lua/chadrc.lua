@@ -1,4 +1,5 @@
 local options = {
+
 	base46 = {
 		theme = "tokyonight",
 		transparency = true,

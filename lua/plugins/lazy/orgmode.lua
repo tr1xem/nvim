@@ -6,6 +6,7 @@ return {
 			"danilshvalov/org-modern.nvim",
 			"hamidi-dev/org-list.nvim",
 			"hugginsio/org-virtual-clocktime.nvim",
+			"sudo-burger/cmp-org-roam",
 		},
 		event = "VeryLazy",
 		config = function()
@@ -120,6 +121,37 @@ return {
 			})
 			-- Experimental LSP support
 			vim.lsp.enable("org")
+			-- Refile
+			vim.api.nvim_create_autocmd({ "User", "BufEnter" }, {
+				pattern = { "NvchadThemeLoaded", "*.org" },
+				callback = function()
+					vim.api.nvim_set_hl(0, "@org.keyword.done", { fg = "#2ac3de" })
+				end,
+			})
+			-- Agenda View
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "orgagenda",
+				callback = function()
+					vim.schedule(function()
+						vim.api.nvim_set_hl(0, "@org.agenda.scheduled", { fg = "#50fa7b" })
+					end)
+				end,
+			})
+		end,
+	},
+	{
+
+		"chipsenkbeil/org-roam.nvim",
+		config = function()
+			require("org-roam").setup({
+				directory = "~/personal/orgfiles/roam",
+				org_files = {
+					"~/personal/orgfiles/",
+				},
+			})
+			vim.keymap.set("n", "<CR>", function()
+				require("org-roam").open_node()
+			end, { buffer = true })
 		end,
 	},
 }

@@ -141,6 +141,7 @@ return {
 				},
 
 				sources = {
+					{ name = "org_roam" },
 					{ name = "orgmode" },
 					{ name = "neorg" },
 					{ name = "async_path" },
