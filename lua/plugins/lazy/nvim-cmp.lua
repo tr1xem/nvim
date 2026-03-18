@@ -141,6 +141,7 @@ return {
 				},
 
 				sources = {
+					{ name = "orgmode" },
 					{ name = "neorg" },
 					{ name = "async_path" },
 					{ name = "nvim_lsp" },
