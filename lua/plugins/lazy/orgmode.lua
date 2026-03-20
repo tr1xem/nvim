@@ -63,6 +63,26 @@ return {
 					t = {
 						template = "* TODO %?\nDEADLINE: %T",
 						target = org_path("todos.org"),
+						datetree = {
+							tree_type = "custom",
+							tree = {
+								{
+									format = "%Y",
+									pattern = "^(%d%d%d%d)$",
+									order = { 1 },
+								},
+								{
+									format = "%B",
+									pattern = "^(%a+)$",
+									order = { 1 },
+								},
+								{
+									format = "%d-%m-%Y %A",
+									pattern = "^(%d%d)%-(%d%d)%-(%d%d%d%d) (%a+)$",
+									order = { 3, 2, 1, 4 },
+								},
+							},
+						},
 					},
 					j = {
 						description = "Journal",
