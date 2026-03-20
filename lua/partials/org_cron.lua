@@ -1,16 +1,14 @@
 local orgmode = vim.fn.stdpath("data") .. "/lazy/orgmode"
 vim.opt.runtimepath:append(orgmode)
+local home = os.getenv("HOME")
 
 require("orgmode").cron({
-	org_agenda_files = vim.fn.expand("~/personal/orgfiles/**/*"),
-	org_default_notes_file = vim.fn.expand("~/personal/orgfiles/refile.org"),
-	org_todo_keywords = { "TODO", "WAITING", "PROGRESS", "|", "DONE", "DELEGATED" },
+	org_agenda_files = home .. "/personal/orgfiles/**/*",
+	org_default_notes_file = home .. "/personal/orgfiles/todos.org",
 	notifications = {
-		enabled = false,
-		cron_enabled = true,
 		repeater_reminder_time = { 10, 0 },
 		deadline_warning_reminder_time = { 120, 60, 30, 0 },
-		reminder_time = { 30, 10, 0 },
+		reminder_time = { 60, 30, 10, 0 },
 		deadline_reminder = true,
 		scheduled_reminder = true,
 		cron_notifier = function(tasks)

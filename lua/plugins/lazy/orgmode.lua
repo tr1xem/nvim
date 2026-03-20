@@ -1,3 +1,8 @@
+local org_path = function(path)
+	local org_directory = "~/personal/orgfiles"
+	return ("%s/%s"):format(org_directory, path)
+end
+
 return {
 	{
 		"nvim-orgmode/orgmode",
@@ -13,17 +18,19 @@ return {
 			-- Setup orgmode
 			local Menu = require("org-modern.menu")
 			require("orgmode").setup({
-				org_agenda_files = "~/personal/orgfiles/**/*",
-				org_default_notes_file = "~/personal/orgfiles/refile.org",
-				org_hide_emphasis_markers = true,
+				org_agenda_files = { org_path("**/*"), ("%s/*.org"):format(vim.fn.getcwd()) },
+				org_default_notes_file = org_path("refile.org"),
+				org_agenda_min_height = 24,
 				org_agenda_text_search_extra_files = { "agenda-archives" },
+				org_hide_emphasis_markers = true,
+				org_highlight_latex_and_related = "native",
 				org_agenda_time_grid = {
 					type = { "daily", "today", "require-timed", "remove-match" },
 				},
 
 				org_startup_indented = true,
 				org_log_into_drawer = "LOGBOOK",
-				org_todo_keywords = { "TODO", "WAITING", "PROGRESS", "|", "DONE", "DELEGATED" },
+				org_todo_keywords = { "TODO(t)", "WAITING(w)", "PROGRESS(p)", "|", "DONE(d)", "DELEGATED(l)" },
 				org_todo_keyword_faces = {
 					TODO = ":foreground #FF5555 :weight bold",
 					WAITING = ":foreground #BD93F9 :weight bold",
@@ -53,10 +60,19 @@ return {
 					},
 				},
 				org_capture_templates = {
+					t = {
+						description = "Refile",
+						template = "* TODO %?\nDEADLINE: %T",
+					},
+					T = {
+						description = "Todo",
+						template = "* TODO %?\nDEADLINE: %T",
+						target = org_path("todos.org"),
+					},
 					j = {
 						description = "Journal",
 						template = "\n*** %<%Y-%m-%d> %<%A>\n**** %U\n\n%?",
-						target = "~/personal/orgfiles/journal.org",
+						target = org_path("journal.org"),
 					},
 					e = {
 						description = "Event",
@@ -64,21 +80,24 @@ return {
 							r = {
 								description = "recurring",
 								template = "** %?\n %T",
-								target = "~/personal/orgfiles/calendar.org",
+								target = org_path("calendar.org"),
 								headline = "recurring",
 							},
 							o = {
 								description = "one-time",
 								template = "** %?\n %T",
-								target = "~/personal/orgfiles/calendar.org",
+								target = org_path("calendar.org"),
 								headline = "one-time",
 							},
 						},
 					},
+					h = {
+						description = "Heading",
+						template = "* %? \n %u",
+					},
 				},
 				notifications = {
 					enabled = true,
-					cron_enabled = false,
 					repeater_reminder_time = { 10, 0 },
 					deadline_warning_reminder_time = { 120, 60, 30 },
 					reminder_time = { 30, 10, 0 },
@@ -133,7 +152,10 @@ return {
 				pattern = "orgagenda",
 				callback = function()
 					vim.schedule(function()
-						vim.api.nvim_set_hl(0, "@org.agenda.scheduled", { fg = "#50fa7b" })
+						vim.api.nvim_set_hl(0, "@org.agenda.scheduled", { fg = "#ff9e64" })
+						vim.api.nvim_set_hl(0, "@org.agenda.day", { fg = "#b292eb" })
+						vim.api.nvim_set_hl(0, "@org.agenda.deadline", { fg = "#d94a49" })
+						vim.api.nvim_set_hl(0, "@org.agenda.time_grid", { fg = "#28a8c2" })
 					end)
 				end,
 			})
@@ -147,6 +169,7 @@ return {
 				directory = "~/personal/orgfiles/roam",
 				org_files = {
 					"~/personal/orgfiles/",
+					"~/personal/orgfiles/refile.org",
 				},
 			})
 			vim.keymap.set("n", "<CR>", function()

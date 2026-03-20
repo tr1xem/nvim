@@ -18,14 +18,14 @@ return {
 			relative_to_current_file = true,
 			filetypes = {
 				org = {
-					template = "[[file:$FILE_PATH][$LABEL]]",
-					-- 					template = [=[
-					-- #+BEGIN_FIGURE
-					-- [[file:$FILE_PATH]]
-					-- #+CAPTION: $CURSOR
-					-- #+NAME: fig:$LABEL
-					-- #+END_FIGURE
-					--     ]=], ---@type string | fun(context: table): string
+					-- template = "[[file:$FILE_PATH][$LABEL]]",
+					template = [=[
+					#+BEGIN_FIGURE
+					[[file:$FILE_PATH]]
+					#+CAPTION: $CURSOR
+					#+NAME: fig:$LABEL
+					#+END_FIGURE
+					    ]=],
 				},
 				norg = {
 					url_encode_path = true,
