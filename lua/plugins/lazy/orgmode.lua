@@ -61,18 +61,13 @@ return {
 				},
 				org_capture_templates = {
 					t = {
-						description = "Refile",
-						template = "* TODO %?\nDEADLINE: %T",
-					},
-					T = {
-						description = "Todo",
 						template = "* TODO %?\nDEADLINE: %T",
 						target = org_path("todos.org"),
 					},
 					j = {
 						description = "Journal",
 						template = "\n*** %<%Y-%m-%d> %<%A>\n**** %U\n\n%?",
-						target = org_path("journal.org"),
+						target = org_path("journal/%<%Y-%m>.org"),
 					},
 					e = {
 						description = "Event",
@@ -91,10 +86,38 @@ return {
 							},
 						},
 					},
-					h = {
-						description = "Heading",
-						template = "* %? \n %u",
+					r = {
+						description = "Refile",
+						subtemplates = {
+							t = {
+								description = "Things to lookat",
+								headline = "Things to look at",
+								target = org_path("refile.org"),
+								template = "* %? \n %u",
+							},
+							i = {
+								description = "Idea",
+								headline = "Ideas",
+								target = org_path("refile.org"),
+								template = "* %? \n %u",
+							},
+							g = {
+								description = "Games",
+								headline = "Games to play",
+								target = org_path("refile.org"),
+								template = "- [ ] %?",
+							},
+							m = {
+								description = "Movies",
+								headline = "Movies to watch",
+								target = org_path("refile.org"),
+								template = "- [ ] %?",
+							},
+						},
 					},
+				},
+				mapping = {
+					org_toggle_checkbox = "<M-Space>",
 				},
 				notifications = {
 					enabled = true,
@@ -126,7 +149,7 @@ return {
 			require("org-bullets").setup()
 			require("org-list").setup({
 				mapping = {
-					key = "<leader>lt", -- nvim-orgmode users: you might want to change this to <leader>olt
+					key = "<leader>olt",
 					desc = "Toggle: Cycle through list types",
 				},
 				checkbox_toggle = {
@@ -135,7 +158,7 @@ return {
 					-- If both mapping stay the same, the one from nvim-orgmode will "win"
 					key = "<M-Space>",
 					desc = "Toggle checkbox state",
-					filetypes = { "org", "markdown" }, -- Add more filetypes as needed
+					filetypes = { "org", "markdown" },
 				},
 			})
 			-- Experimental LSP support
@@ -157,6 +180,27 @@ return {
 						vim.api.nvim_set_hl(0, "@org.agenda.deadline", { fg = "#d94a49" })
 						vim.api.nvim_set_hl(0, "@org.agenda.time_grid", { fg = "#28a8c2" })
 					end)
+				end,
+			})
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "org",
+				callback = function()
+					vim.keymap.set(
+						"i",
+						"<S-CR>",
+						'<cmd>lua require("orgmode").action("org_mappings.meta_return")<CR>',
+						{
+							silent = true,
+							buffer = true,
+						}
+					)
+				end,
+			})
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = { "org", "orgagenda" },
+				callback = function()
+					vim.opt_local.wrap = true
+					vim.opt_local.linebreak = true
 				end,
 			})
 		end,

@@ -1,3 +1,14 @@
+local M = {}
+
+M.org_clock = function()
+	local ok, org = pcall(require, "orgmode")
+	if not ok then
+		return ""
+	end
+
+	local s = org.statusline()
+	return s ~= "" and ("  " .. s) or ""
+end
 local options = {
 
 	base46 = {
@@ -70,7 +81,7 @@ local options = {
 			-- round and block will work for minimal theme only
 			separator_style = "default",
 			order = nil,
-			modules = nil,
+			modules = {},
 		},
 		telescope = { style = "bordered" }, -- borderless / bordered
 
