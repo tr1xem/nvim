@@ -2,7 +2,6 @@
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
 -- Column Width
 vim.opt.colorcolumn = "81"
--- vim.api.nvim_set_hl(0, "ColorColumn", { bg = "#011423" })
 -- Disable colorcolumn for oil buffers
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "oil",
@@ -52,28 +51,6 @@ vim.keymap.set("n", "<leader>st", function()
 	vim.api.nvim_win_set_height(0, 15)
 end)
 
--- Colorscheme
--- vim.cmd("colorscheme tokyonight")
-
--- -- Cord setup
--- require("cord").setup({
--- 	display = {},
--- 	buttons = {
--- 		{
--- 			label = function(opts)
--- 				return opts.repo_url and "View Repository"
--- 			end,
--- 			url = function(opts)
--- 				return opts.repo_url
--- 			end,
--- 		},
--- 	},
--- })
-
--- Conform setup
--- require("conform").setup({
--- })
-
 -- Diagnostic signs
 vim.diagnostic.config({
 	signs = {
@@ -85,10 +62,6 @@ vim.diagnostic.config({
 		},
 	},
 })
-
--- require("notify").setup({
--- 	background_colour = "#000000",
--- })
 
 -- Run trim on save
 vim.api.nvim_create_autocmd("BufWritePre", {

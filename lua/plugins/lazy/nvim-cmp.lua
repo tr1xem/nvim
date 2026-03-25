@@ -120,11 +120,12 @@ return {
 					-- }),
 
 					["<Tab>"] = cmp.mapping(function(fallback)
-						-- if cmp.visible() then
-						-- 	cmp.select_next_item()
-						if require("luasnip").expand_or_jumpable() then
-							require("luasnip").expand_or_jump()
-						else
+						local luasnip = require("luasnip")
+
+						if luasnip.expand_or_jumpable() then
+							luasnip.expand_or_jump()
+						elseif not luasnip.in_snippet() then
+							-- Only call fallback (accept Supermaven) if NOT in a snippet
 							fallback()
 						end
 					end, { "i", "s" }),
@@ -141,15 +142,15 @@ return {
 				},
 
 				sources = {
-					{ name = "org_roam" },
-					{ name = "orgmode" },
-					{ name = "neorg" },
-					{ name = "async_path" },
-					{ name = "nvim_lsp" },
-					{ name = "supermaven" },
-					{ name = "luasnip" },
-					{ name = "buffer" },
-					{ name = "nvim_lua" },
+					{ name = "nvim_lsp", priority = 100 },
+					{ name = "luasnip", priority = 90 },
+					{ name = "orgmode", priority = 80 },
+					{ name = "org_roam", priority = 75 },
+					-- { name = "neorg", priority = 70 },
+					{ name = "nvim_lua", priority = 85 },
+					{ name = "async_path", priority = 60 },
+					{ name = "buffer", priority = 40 },
+					-- { name = "supermaven", priority = 95 },
 				},
 			}
 			cmp.setup(vim.tbl_deep_extend("force", options, require("nvchad.cmp")))

@@ -87,6 +87,7 @@ return {
 			perlnavigator = {},
 			hyprls = {},
 			gopls = {},
+			htmx = {},
 			lua_ls = {
 				settings = {
 					Lua = {

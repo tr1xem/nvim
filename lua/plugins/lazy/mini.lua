@@ -29,7 +29,7 @@ return {
 		-- require("mini.extra").setup()
 		-- require("mini.icons").setup()
 		require("mini.snippets").setup()
-		require("mini.diff").setup()
+		-- require("mini.diff").setup()
 
 		-- require("mini.indentscope").setup()
 		-- require("mini.tabline").setup()

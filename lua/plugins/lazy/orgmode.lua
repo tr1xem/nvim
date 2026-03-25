@@ -61,7 +61,7 @@ return {
 				},
 				org_capture_templates = {
 					t = {
-						template = "* TODO %?\nDEADLINE: %T",
+						template = "* TODO %?\nDEADLINE: %T\n%u",
 						target = org_path("todos.org"),
 						datetree = {
 							tree_type = "custom",
@@ -110,8 +110,14 @@ return {
 						description = "Refile",
 						subtemplates = {
 							t = {
-								description = "Things to lookat",
+								description = "Things to look at",
 								headline = "Things to look at",
+								target = org_path("refile.org"),
+								template = "* %? \n %u",
+							},
+							r = {
+								description = "Things to remember",
+								headline = "Things to remember",
 								target = org_path("refile.org"),
 								template = "* %? \n %u",
 							},
