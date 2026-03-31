@@ -80,6 +80,7 @@ return {
 		)
 		local servers = {
 			csharp_ls = {},
+			hls = {},
 			elixirls = {},
 			tailwindcss = {},
 			cmake_language_server = {},
