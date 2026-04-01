@@ -53,6 +53,7 @@ return {
 				["markdown.mdx"] = { "prettier", "markdownlint", "markdown-toc" },
 				go = { "gofumpt", "goimports" },
 				cmake = { "cmake_format" },
+				haskell = { "fourmolu" },
 			},
 			format_on_save = {
 				lsp_fallback = true,
