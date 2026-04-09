@@ -30,3 +30,6 @@ require("orgmode").cron({
 		end,
 	},
 })
+
+-- Add this to crontab -l
+-- * * * * * DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus /usr/sbin/nvim -u NONE --noplugin --headless -c 'lua require("partials.org_cron")'
