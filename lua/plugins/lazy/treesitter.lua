@@ -282,6 +282,7 @@ local V2 = {
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
+		enabled = false,
 		event = { "BufReadPre", "BufNewFile" },
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
