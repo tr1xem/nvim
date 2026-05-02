@@ -20,7 +20,7 @@ return {
 			require("orgmode").setup({
 				org_agenda_files = { org_path("**/*"), ("%s/*.org"):format(vim.fn.getcwd()) },
 				org_default_notes_file = org_path("refile.org"),
-				org_agenda_min_height = 24,
+				-- org_agenda_min_height = 6,
 				org_agenda_text_search_extra_files = { "agenda-archives" },
 				org_hide_emphasis_markers = true,
 				org_highlight_latex_and_related = "native",
@@ -38,6 +38,7 @@ return {
 					DONE = ":foreground #50FA7B :weight bold",
 					DELEGATED = ":foreground #98cbfa :slant italic :underline on",
 				},
+				-- org_log_done = "note",
 				ui = {
 					input = {
 						use_vim_ui = true,
@@ -61,7 +62,7 @@ return {
 				},
 				org_capture_templates = {
 					t = {
-						template = "* TODO %?\nDEADLINE: %T\n%u",
+						template = "* TODO %?\nSCHEDULED: %T\n%u",
 						target = org_path("todos.org"),
 						datetree = {
 							tree_type = "custom",
