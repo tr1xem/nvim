@@ -54,6 +54,7 @@ return {
 				go = { "gofumpt", "goimports" },
 				cmake = { "cmake_format" },
 				haskell = { "fourmolu" },
+				dart = { "dcm" },
 			},
 			format_on_save = {
 				lsp_fallback = true,

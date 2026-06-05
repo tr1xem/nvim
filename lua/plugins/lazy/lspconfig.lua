@@ -249,6 +249,9 @@ return {
 			qmlls = {
 				enabled = false,
 			},
+			dcm = {
+				enabled = true,
+			},
 		}
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
