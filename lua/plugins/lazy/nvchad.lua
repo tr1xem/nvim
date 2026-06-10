@@ -1,6 +1,6 @@
 return {
 	{
-		"NvChad/base46",
+		"GasparVardanyan/base46",
 		dependencies = {
 			"NvChad/ui",
 		},

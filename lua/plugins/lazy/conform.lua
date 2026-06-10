@@ -49,7 +49,7 @@ return {
 					-- "ruff_organize_imports",
 				},
 
-				markdown = { "prettier", "markdown-toc" },
+				-- markdown = { "prettier", "markdown-toc" },
 				["markdown.mdx"] = { "prettier", "markdownlint", "markdown-toc" },
 				go = { "gofumpt", "goimports" },
 				cmake = { "cmake_format" },

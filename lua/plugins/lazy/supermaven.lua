@@ -2,7 +2,7 @@ return {
 	"supermaven-inc/supermaven-nvim",
 	config = function()
 		require("supermaven-nvim").setup({
-			disable_inline_completion = false,
+			disable_inline_completion = true,
 			ignore_filetypes = { org = true },
 		})
 	end,

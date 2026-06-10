@@ -89,6 +89,11 @@ return {
 		map("n", "<leader>cC", vim.cmd.CMakeClean, { desc = "cmake clean" })
 
 		require("cmake-tools").setup({
+			cmake_dap_configuration = {
+				type = "cppdbg",
+				request = "launch",
+				name = "cppdbg",
+			},
 			cmake_build_options = cmake_build_options,
 			cmake_generate_options = cmake_generate_options,
 		})

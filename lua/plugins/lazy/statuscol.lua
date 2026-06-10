@@ -12,11 +12,6 @@ return {
 					click = "v:lua.ScSa",
 					condition = { builtin.not_empty },
 				},
-				-- {
-				-- 	text = {},
-				-- 	condition = { true, builtin.not_empty },
-				-- 	click = "v:lua.ScFa",
-				-- },
 				{
 					text = { builtin.lnumfunc, " " },
 					condition = { true, builtin.not_empty },

@@ -9,11 +9,11 @@ return {
 	config = function()
 		-- Signs
 		local signs = {
-			DapBreakpoint = { text = "", texthl = "DiagnosticError" },
-			DapBreakpointCondition = { text = "ﳁ", texthl = "DiagnosticWarn" },
-			DapBreakpointRejected = { text = "", texthl = "DiagnosticError" },
-			DapLogPoint = { text = "󰍩", texthl = "DiagnosticInfo" },
-			DapStopped = { text = "", texthl = "DiagnosticHint", linehl = "Visual" },
+			DapBreakpoint = { text = " ", texthl = "DiagnosticError" },
+			DapBreakpointCondition = { text = "󰜁 ", texthl = "DiagnosticWarn" },
+			DapBreakpointRejected = { text = " ", texthl = "DiagnosticError" },
+			DapLogPoint = { text = "󰍩 ", texthl = "DiagnosticInfo" },
+			DapStopped = { text = " ", texthl = "DiagnosticHint", linehl = "Visual" },
 		}
 
 		for name, sign in pairs(signs) do

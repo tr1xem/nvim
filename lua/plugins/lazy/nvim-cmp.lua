@@ -91,15 +91,15 @@ return {
 				},
 
 				sources = {
-					{ name = "nvim_lsp", priority = 100 },
-					{ name = "luasnip", priority = 90 },
-					{ name = "orgmode", priority = 80 },
-					{ name = "org_roam", priority = 75 },
-					-- { name = "neorg", priority = 70 },
+					{ name = "luasnip", priority = 100 },
+					{ name = "nvim_lsp", priority = 90 },
+					{ name = "supermaven", priority = 85 },
 					{ name = "nvim_lua", priority = 85 },
+					{ name = "orgmode", priority = 80 },
+					{ name = "org_roam", priority = 100 },
+					-- { name = "neorg", priority = 70 },
 					{ name = "async_path", priority = 60 },
 					{ name = "buffer", priority = 40 },
-					-- { name = "supermaven", priority = 95 },
 				},
 			}
 			cmp.setup(vim.tbl_deep_extend("force", options, require("nvchad.cmp")))

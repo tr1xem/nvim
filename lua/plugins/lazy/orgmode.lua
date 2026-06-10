@@ -73,8 +73,8 @@ return {
 									order = { 1 },
 								},
 								{
-									format = "%m",
-									pattern = "^(%d%d)$",
+									format = "%B",
+									pattern = "^(%a+)$",
 									order = { 1 },
 								},
 								{
