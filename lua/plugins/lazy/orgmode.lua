@@ -29,6 +29,7 @@ return {
 				},
 
 				org_startup_indented = true,
+				org_id_link_to_org_use_id = true,
 				org_log_into_drawer = "LOGBOOK",
 				org_todo_keywords = { "TODO(t)", "WAITING(w)", "PROGRESS(p)", "|", "DONE(d)", "DELEGATED(l)" },
 				org_todo_keyword_faces = {
@@ -246,6 +247,44 @@ return {
 			vim.keymap.set("n", "<CR>", function()
 				require("org-roam").open_node()
 			end, { buffer = true })
+		end,
+	},
+	{
+		"seflue/org-link.nvim",
+		event = "VeryLazy",
+		opts = {},
+	},
+	{
+		"michaelb/sniprun",
+		build = "sh install.sh",
+		config = function()
+			require("sniprun").setup({
+				display = {
+					"VirtualLine", --# display results in the command-line  area
+					-- "VirtualTextOk", --# display ok results as virtual text (multiline is shortened)
+
+					-- "VirtualText",             --# display results as virtual text
+					-- "VirtualLine",             --# display results as virtual lines
+					-- "TempFloatingWindow",      --# display results in a floating window
+					-- "LongTempFloatingWindow",  --# same as above, but only long results. To use with VirtualText[Ok/Err]
+					-- "Terminal",                --# display results in a vertical split
+					-- "TerminalWithCode",        --# display results and code history in a vertical split
+					-- "NvimNotify",              --# display with the nvim-notify plugin
+					-- "Api"                      --# return output to a programming interface
+				},
+			})
+		end,
+
+		vim.keymap.set({ "n", "v" }, "<leader>sr", "<cmd>SnipRun<cr>", { noremap = true, silent = true }),
+		vim.keymap.set({ "n" }, "<leader>sc", "<cmd>SnipClose<cr>", { noremap = true, silent = true }),
+	},
+	{
+
+		"aaratha/org-cycle-lite.nvim",
+		config = function()
+			require("org-cycle-lite").setup({
+				keymap = "<TAB>", -- Optional: change keymap
+			})
 		end,
 	},
 }

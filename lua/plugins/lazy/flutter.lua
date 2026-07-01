@@ -8,6 +8,7 @@ return {
 	},
 	config = function()
 		require("flutter-tools").setup({
+			fvm = true,
 			dev_log = {
 				enabled = true,
 			},
@@ -16,7 +17,10 @@ return {
 				auto_openbrowser = true,
 			},
 		})
-		vim.keymap.set("n", "Fr", [[:FlutterReload<CR>]], {})
-		vim.keymap.set("n", "FR", [[:FlutterRestart<CR>]], {})
+		vim.keymap.set("n", "<leader>fr", [[:FlutterReload<CR>]], { desc = "FlutterReload" })
+		vim.keymap.set("n", "<leader>fR", [[:FlutterRestart<CR>]], { desc = "FlutterRestart" })
+		vim.keymap.set("n", "<leader>fd", [[:FlutterDevices<CR>]], { desc = "FlutterDevices" })
+		vim.keymap.set("n", "<leader>fe", [[:FlutterEmulators<CR>]], { desc = "FlutterEmulators" })
+		vim.keymap.set("n", "<leader>fl", [[:FlutterLogToggle<CR>]], { desc = "FlutterLogToggle" })
 	end,
 }
