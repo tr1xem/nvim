@@ -6,7 +6,6 @@ return {
 	},
 	config = function()
 		require("lspsaga").setup({
-
 			hover = {
 				open_cmd = "!zen-browser",
 			},

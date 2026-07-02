@@ -1,6 +1,12 @@
 return {
 	"edisj/msgarea.nvim",
+	opts = {},
 	config = function()
+		vim.g.msgarea_max_height = 15
+		-- vim.g.msgarea_max_height = 0.4    OR fractional heights 0-1 are percentage of editor height
+		vim.g.msgarea_min_height = 3
+		-- vim.g.msgarea_min_height = 0.1    same as above
+
 		require("vim._core.ui2").enable({
 			enable = true,
 			msg = {
@@ -24,5 +30,19 @@ return {
 				pager = { height = 0.75 },
 			},
 		})
+		-- assuming you already called require("vim._core.ui2").enable({ ... }) in your config
+		local targets = require("vim._core.ui2").cfg.msg.targets
+		for _, target in ipairs({
+			"wmsg",
+			"emsg",
+			"typed_cmd",
+			"list_cmd",
+			"lua_error",
+			"lua_print",
+			"echoerr",
+		}) do
+			---@diagnostic disable-next-line: assign-type-mismatch
+			targets[target] = "msgarea"
+		end
 	end,
 }

@@ -38,17 +38,11 @@ vim.diagnostic.config({
 })
 
 -- Code fold
-
 function _G.custom_foldtext()
 	local startLine = vim.fn.getline(vim.v.foldstart)
 	local lineCount = vim.v.foldend - vim.v.foldstart + 1
-
-	-- remove leading whitespace
-	startLine = startLine:gsub("^%s*", "")
-
 	return ("%s  󰁂 %d lines "):format(startLine, lineCount)
 end
-
 vim.opt.foldtext = "v:lua.custom_foldtext()"
 vim.o.foldmethod = "expr"
 vim.o.foldexpr = "v:lua.vim.treesitter.foldexpr()"
@@ -56,8 +50,8 @@ vim.o.foldnestmax = 5
 vim.o.foldminlines = 1
 vim.o.foldlevelstart = 99
 vim.o.foldlevel = 99
-vim.o.foldcolumn = "1"
 vim.o.foldenable = true
+vim.o.foldcolumn = "1"
 vim.opt.fillchars = {
 	eob = " ",
 	fold = " ",

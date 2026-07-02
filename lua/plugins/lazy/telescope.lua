@@ -8,28 +8,28 @@ return {
 			local telescope = require("telescope")
 			local builtin = require("telescope.builtin")
 
-			telescope.setup({
-				extensions = {
-					fzf = {},
-				},
-			})
+			-- telescope.setup({
+			-- 	extensions = {
+			-- 		fzf = {},
+			-- 	},
+			-- })
 
-			telescope.load_extension("fzf")
+			-- telescope.load_extension("fzf")
 
 			local map = vim.keymap.set
 
 			-- File pickers
-			map("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
-			map("n", "<C-p>", builtin.git_files, { desc = "Git files" })
+			-- map("n", "<leader>ff", builtin.find_files, { desc = "Find files" })
+			-- map("n", "<C-p>", builtin.git_files, { desc = "Git files" })
 
 			-- Grep pickers
-			map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
-			map(
-				"n",
-				"<leader>fz",
-				"<cmd>Telescope current_buffer_fuzzy_find<CR>",
-				{ desc = "telescope find in current buffer" }
-			)
+			-- map("n", "<leader>fw", "<cmd>Telescope live_grep<CR>", { desc = "telescope live grep" })
+			-- map(
+			-- 	"n",
+			-- 	"<leader>fz",
+			-- 	"<cmd>Telescope current_buffer_fuzzy_find<CR>",
+			-- 	{ desc = "telescope find in current buffer" }
+			-- )
 			map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidden term" })
 			-- map("n", "<leader>fw", function()
 			-- 	builtin.grep_string({ search = vim.fn.expand("<cword>") })
@@ -39,29 +39,29 @@ return {
 			-- 	builtin.grep_string({ search = vim.fn.expand("<cWORD>") })
 			-- end, { desc = "Grep WORD under cursor" })
 
-			map("n", "<leader>f:", builtin.command_history, { desc = "command history" })
-			map("n", "<leader>f/", builtin.search_history, { desc = "search history" })
+			-- map("n", "<leader>f:", builtin.command_history, { desc = "command history" })
+			-- map("n", "<leader>f/", builtin.search_history, { desc = "search history" })
 
 			-- Help and buffers
-			map("n", "<leader>vh", builtin.help_tags, { desc = "Help tags" })
-			map("n", "<leader>fb", function()
-				builtin.buffers({
-					sort_mru = true,
-					ignore_current_buffer = true,
-				})
-			end, { desc = "Buffers (MRU)" })
+			-- map("n", "<leader>vh", builtin.help_tags, { desc = "Help tags" })
+			-- map("n", "<leader>fb", function()
+			-- 	builtin.buffers({
+			-- 		sort_mru = true,
+			-- 		ignore_current_buffer = true,
+			-- 	})
+			-- end, { desc = "Buffers (MRU)" })
 
 			-- LSP references
-			map({ "n", "v" }, "<leader>fr", builtin.lsp_references, {
-				silent = true,
-				noremap = true,
-				desc = "LSP References",
-			})
-
+			-- map({ "n", "v" }, "<leader>fr", builtin.lsp_references, {
+			-- 	silent = true,
+			-- 	noremap = true,
+			-- 	desc = "LSP References",
+			-- })
+			--
 			-- Config files
-			map("n", "<space>fc", function()
-				builtin.find_files({ cwd = vim.fn.stdpath("config") })
-			end, { desc = "Find config files" })
+			-- map("n", "<space>fc", function()
+			-- 	builtin.find_files({ cwd = vim.fn.stdpath("config") })
+			-- end, { desc = "Find config files" })
 		end,
 	},
 	{

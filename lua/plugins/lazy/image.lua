@@ -1,16 +1,16 @@
 return {
-	{
-		"3rd/image.nvim",
-		config = function()
-			require("image").setup({
-				integrations = {
-					org = {
-						enabled = true,
-					},
-				},
-			})
-		end,
-	},
+	-- {
+	-- 	"3rd/image.nvim",
+	-- 	config = function()
+	-- 		require("image").setup({
+	-- 			integrations = {
+	-- 				org = {
+	-- 					enabled = true,
+	-- 				},
+	-- 			},
+	-- 		})
+	-- 	end,
+	-- },
 	{
 		"HakonHarnes/img-clip.nvim",
 		event = "VeryLazy",

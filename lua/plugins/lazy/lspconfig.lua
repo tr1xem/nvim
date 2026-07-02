@@ -66,20 +66,20 @@ return {
 				end
 
 				-- keymaps
-				opts.desc = "Show LSP references/dereferences"
-				vim.keymap.set("n", "<leader>vrr", "<cmd>Lspsaga finder def+ref<CR>", opts)
-
-				opts.desc = "Show LSP definitions"
-				vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
+				-- opts.desc = "Show LSP references/dereferences"
+				-- vim.keymap.set("n", "<leader>vrr", "<cmd>Lspsaga finder def+ref<CR>", opts)
+				--
+				-- opts.desc = "Show LSP definitions"
+				-- vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
 
 				--             opts.desc = "Go to declaration"
 				-- vim.keymap.set("n", "gD", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
 
 				-- opts.desc = "Show LSP implementations
 				-- vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
-
-				opts.desc = "Show LSP type definitions"
-				vim.keymap.set("n", "gt", "<cmd>Lspsaga goto_type_definition<CR>", opts)
+				--
+				-- opts.desc = "Show LSP type definitions"
+				-- vim.keymap.set("n", "gt", "<cmd>Lspsaga goto_type_definition<CR>", opts)
 
 				opts.desc = "See available code actions"
 				vim.keymap.set("n", "<leader>vca", "<cmd>Lspsaga code_action<CR>", opts)
@@ -91,9 +91,9 @@ return {
 				-- opts.desc = "Show buffer diagnostics"
 				-- vim.keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
 
-				opts.desc = "Show line diagnostics"
+				-- opts.desc = "Show line diagnostics"
 				-- vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
-				vim.keymap.set("n", "<leader>vd", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
+				-- vim.keymap.set("n", "<leader>vd", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
 
 				opts.desc = "Show documentation for what is under cursor"
 				-- vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
