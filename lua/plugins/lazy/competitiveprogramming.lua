@@ -37,8 +37,8 @@ return {
 				received_contests_prompt_extension = false,
 			})
 
-			vim.keymap.set("n", "<leader>cr", [[:CompetiTest run<CR>]], { desc = "Compitest run" })
-			vim.keymap.set("n", "<leader>ct", [[:CompetiTest show_ui<CR>]], { desc = "Compitest show_ui" })
+			vim.keymap.set("n", "<leader>ctr", [[:CompetiTest run<CR>]], { desc = "Compitest run" })
+			vim.keymap.set("n", "<leader>ctu", [[:CompetiTest show_ui<CR>]], { desc = "Compitest show_ui" })
 		end,
 	},
 	-- {

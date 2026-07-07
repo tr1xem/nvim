@@ -74,9 +74,9 @@ return {
 									order = { 1 },
 								},
 								{
-									format = "%B",
-									pattern = "^(%a+)$",
-									order = { 1 },
+									format = "%m %B",
+									pattern = "^(%d%d) (.+)$",
+									order = { 2, 1 },
 								},
 								{
 									format = "%d-%m-%Y %A",
@@ -286,5 +286,24 @@ return {
 				keymap = "<TAB>", -- Optional: change keymap
 			})
 		end,
+	},
+	{
+		-- dir = "~/work/org-roam-nvim-ui/",
+		"tr1xem/org-roam-nvim-ui",
+		dependencies = {
+			"chipsenkbeil/org-roam.nvim",
+		},
+		ft = "orgmode",
+		opts = {
+			executable = "/home/saumya/.cargo/bin/org-roam-nvim-ui",
+		},
+		-- build = function()
+		-- 	require("org-roam-ui").compile()
+		-- end,
+		-- config = function()
+		-- 	vim.keymap.set("n", "<leader>ru", function()
+		-- 		require("org-roam-ui").open()
+		-- 	end, { desc = "open in org roam ui" })
+		-- end,
 	},
 }

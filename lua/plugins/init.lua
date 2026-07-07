@@ -1,7 +1,7 @@
 -- Key mappings
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
 -- Column Width
-vim.opt.colorcolumn = "81"
+-- vim.opt.colorcolumn = "81"
 -- Disable colorcolumn for oil buffers
 vim.api.nvim_create_autocmd("FileType", {
 	pattern = "oil",

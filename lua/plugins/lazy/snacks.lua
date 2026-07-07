@@ -7,7 +7,9 @@ return {
 		image = {
 			enabled = true,
 		},
-		picker = { enabled = true },
+		picker = {
+			enabled = true,
+		},
 
 		indent = { enabled = true },
 		notifier = { enabled = true },
@@ -35,7 +37,7 @@ return {
 			desc = "Search History",
 		},
 		{
-			"<leader>n",
+			"<leader>nh",
 			function()
 				Snacks.picker.notifications()
 			end,
@@ -59,7 +61,15 @@ return {
 		{
 			"<leader>ff",
 			function()
-				Snacks.picker.files()
+				Snacks.picker.files({
+					finder = "files",
+					format = "file",
+					show_empty = true,
+					hidden = true,
+					ignored = false,
+					follow = false,
+					supports_live = true,
+				})
 			end,
 			desc = "Find Files",
 		},
@@ -100,19 +110,19 @@ return {
 			desc = "Git Log Line",
 		},
 		{
-			"<leader>gs",
+			"<leader>gS",
 			function()
 				Snacks.picker.git_status()
 			end,
 			desc = "Git Status",
 		},
-		{
-			"<leader>gS",
-			function()
-				Snacks.picker.git_stash()
-			end,
-			desc = "Git Stash",
-		},
+		-- {
+		-- 	"<leader>gS",
+		-- 	function()
+		-- 		Snacks.picker.git_stash()
+		-- 	end,
+		-- 	desc = "Git Stash",
+		-- },
 		{
 			"<leader>gd",
 			function()
@@ -264,6 +274,13 @@ return {
 				Snacks.picker.lsp_workspace_symbols()
 			end,
 			desc = "LSP Workspace Symbols",
+		},
+		{
+			"<leader>u",
+			function()
+				Snacks.picker.undo()
+			end,
+			desc = "Undo History",
 		},
 	},
 }

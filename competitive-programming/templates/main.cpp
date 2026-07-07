@@ -57,7 +57,7 @@ template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_pr
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
 
 void setIO(string s) { freopen((s + ".in").c_str(), "r", stdin); freopen((s + ".out").c_str(), "w", stdout); }
-// NOLINTEND
+// NOLINTEND NOLINTBEGIN(readability-braces-around-statements,readability-isolate-declaration,readability-implicit-bool-conversion)
 // clang-format on
 
 int main() {
@@ -65,3 +65,4 @@ int main() {
 
     return 0;
 }
+// NOLINTEND(readability-braces-around-statements,readability-isolate-declaration,readability-implicit-bool-conversion)

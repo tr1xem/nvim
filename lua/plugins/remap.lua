@@ -110,3 +110,7 @@ end, { desc = "Leetcode tabs" })
 map("n", "<leader>lc", function()
 	vim.cmd("Leet console")
 end, { desc = "Leetcode console" })
+
+map("n", "<leader>ru", function()
+	require("org-roam-ui").open()
+end, { desc = "open in org roam ui" })
