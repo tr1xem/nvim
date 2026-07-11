@@ -66,8 +66,8 @@ return {
 				end
 
 				-- keymaps
-				-- opts.desc = "Show LSP references/dereferences"
-				-- vim.keymap.set("n", "<leader>vrr", "<cmd>Lspsaga finder def+ref<CR>", opts)
+				opts.desc = "Show LSP references/dereferences"
+				vim.keymap.set("n", "<leader>vrr", "<cmd>Lspsaga finder def+ref<CR>", opts)
 				--
 				-- opts.desc = "Show LSP definitions"
 				-- vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
