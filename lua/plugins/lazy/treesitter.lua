@@ -1,7 +1,3 @@
-pcall(function()
-	dofile(vim.g.base46_cache .. "syntax")
-	dofile(vim.g.base46_cache .. "treesitter")
-end)
 return {
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -64,11 +60,11 @@ return {
 			-- configure treesitter
 			treesitter.setup({ -- enable syntax highlighting
 				-- NOTE: Dosent Work with nvim-treesitter in nvim 0.12.*
-				-- highlight = {
-				-- 	enable = true,
-				-- },
+				highlight = {
+					enable = true,
+				},
 				-- -- enable indentation
-				-- indent = { enable = true },
+				indent = { enable = true },
 
 				-- enable textobjects
 

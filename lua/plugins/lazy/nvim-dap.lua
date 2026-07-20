@@ -73,26 +73,67 @@ return {
 
 		dap.configurations.cpp = {
 			{
-				name = "Launch file",
+				name = "Launch with Picker (Snacks)",
 				type = "cppdbg",
 				request = "launch",
-				program = function()
-					local input = vim.fn.input("Path to executable (you can add args): ", vim.fn.getcwd() .. "")
-					local words = vim.split(input, " ")
-					-- first word is program, rest are args
-					local exe = words[1]
-					local args = {}
-					if #words > 1 then
-						for i = 2, #words do
-							table.insert(args, words[i])
-						end
-					end
-					-- save args so dap can see them
-					dap.configurations.cpp[1].args = args
-					return exe
-				end,
 				cwd = "${workspaceFolder}",
 				stopAtEntry = true,
+
+				-- 1. Coroutine pauses DAP until you pick a file
+				program = function()
+					return coroutine.create(function(dap_run_co)
+						local selected_file = nil
+
+						Snacks.picker.files({
+							title = "Select Executable (Esc to type manually)",
+							cmd = "fd",
+							args = { "--type", "x", "--hidden", "--exclude", ".git" },
+							layout = { preset = "select" },
+
+							actions = {
+								confirm = function(picker, item)
+									if item then
+										selected_file = item.file
+									end
+									picker:close()
+								end,
+							},
+
+							-- on_close guarantees the coroutine resumes even if you press Esc
+							on_close = function()
+								if selected_file then
+									-- The user picked a file from the picker
+									coroutine.resume(dap_run_co, selected_file)
+								else
+									-- The user pressed Esc. Fallback to manual input.
+									-- vim.schedule is REQUIRED here so Neovim doesn't glitch
+									-- when opening a new prompt immediately after closing the picker.
+									vim.schedule(function()
+										local path = vim.fn.input({
+											prompt = "Manual Path: ",
+											default = vim.fn.getcwd() .. "/",
+											completion = "file",
+										})
+
+										if path and path ~= "" then
+											coroutine.resume(dap_run_co, path)
+										else
+											-- User canceled the manual prompt too, abort DAP
+											coroutine.resume(dap_run_co, dap.ABORT)
+										end
+									end)
+								end
+							end,
+						})
+					end)
+				end,
+
+				-- 2. Handle args separately and safely
+				args = function()
+					local input = vim.fn.input("Arguments (leave empty for none): ")
+					-- The '1' argument tells vim to respect shell quotes
+					return vim.fn.split(input, " ", 1)
+				end,
 			},
 			{
 				name = "Attach to gdbserver :1234",
@@ -102,6 +143,7 @@ return {
 				miDebuggerServerAddress = "localhost:1234",
 				miDebuggerPath = "/usr/bin/gdb",
 				cwd = "${workspaceFolder}",
+				-- You can apply the exact same coroutine/picker logic here as well
 				program = function()
 					return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
 				end,

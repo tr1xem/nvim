@@ -36,7 +36,6 @@ return {
 				cmp.confirm({ select = true, behavior = behavior })
 			end
 
-			dofile(vim.g.base46_cache .. "cmp")
 			local options = {
 				completion = { completeopt = "menu,menuone" },
 

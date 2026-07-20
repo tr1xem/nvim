@@ -111,6 +111,18 @@ map("n", "<leader>lc", function()
 	vim.cmd("Leet console")
 end, { desc = "Leetcode console" })
 
-map("n", "<leader>ru", function()
+map("n", "<leader>nu", function()
 	require("org-roam-ui").open()
 end, { desc = "open in org roam ui" })
+
+map({ "n", "v" }, "<RightMouse>", function()
+	require("menu.utils").delete_old_menus()
+
+	vim.cmd.exec('"normal! \\<RightMouse>"')
+
+	-- clicked buf
+	local buf = vim.api.nvim_win_get_buf(vim.fn.getmousepos().winid)
+	local options = vim.bo[buf].ft == "NvimTree" and "nvimtree" or "default"
+
+	require("menu").open(options, { mouse = true })
+end, {})

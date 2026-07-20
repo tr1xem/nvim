@@ -15,6 +15,18 @@ local options = {
 		theme = "tokyonight",
 		transparency = true,
 		theme_toggle = { "tokyonight", "rosepine" },
+		integrations = {
+			"dap",
+			"hop",
+			"orgmode",
+			"todo",
+			"git",
+			"cmp",
+			"diffview",
+			"lspsaga",
+			"git-conflict",
+			"trouble",
+		},
 	},
 	nvdash = {
 		load_on_startup = true,
@@ -43,14 +55,16 @@ local options = {
 		},
 
 		buttons = {
-			{ txt = "  Find File", keys = "ff", cmd = "Telescope find_files" },
+			{
+				txt = "  Find File",
+				keys = "ff",
+				cmd = ':lua	Snacks.picker.files({ finder = "files", format = "file", show_empty = true, hidden = true, ignored = false, follow = false, supports_live = true, }) ',
+			},
 			{ txt = "  Recent Files", keys = "fo", cmd = "Telescope oldfiles" },
-			{ txt = "󰈭  Find Word", keys = "fw", cmd = "Telescope live_grep" },
+			{ txt = "󰈭  Find Word", keys = "fw", cmd = ":lua	Snacks.picker.grep() " },
 			{ txt = "󱥚  Themes", keys = "th", cmd = ":lua require('nvchad.themes').open()" },
 			{ txt = "  Mappings", keys = "ch", cmd = "NvCheatsheet" },
-
 			{ txt = "─", hl = "NvDashFooter", no_gap = true, rep = true },
-
 			{
 				txt = function()
 					local stats = require("lazy").stats()
@@ -72,11 +86,14 @@ local options = {
 			style = "atom", -- default/flat_light/flat_dark/atom/atom_colored
 			abbr_maxwidth = 60,
 			-- for tailwind, css lsp etc
-			format_colors = { lsp = true, icon = "󱓻" },
+			-- format_colors = { lsp = true, icon = "󱓻" },
+			format_colors = {
+				tailwind = true,
+			},
 		},
 		statusline = {
 			enabled = true,
-			theme = "vscode_colored", -- default/vscode/vscode_colored/minimal
+			theme = "minimal", -- default/vscode/vscode_colored/minimal
 			-- default/round/block/arrow separators work only for default statusline theme
 			-- round and block will work for minimal theme only
 			separator_style = "default",

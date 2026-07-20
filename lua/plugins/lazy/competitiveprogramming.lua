@@ -35,6 +35,25 @@ return {
 				received_contests_problems_path = "$(PROBLEM)/main.$(FEXT)",
 				received_contests_prompt_directory = false,
 				received_contests_prompt_extension = false,
+				compile_command = {
+					c = {
+						exec = "gcc",
+						args = { "-Wall", "-DLOCAL", "$(FNAME)", "-o", "$(FNOEXT)" },
+					},
+					cpp = {
+						exec = "g++",
+						args = { "-Wall", "-DLOCAL", "$(FNAME)", "-o", "$(FNOEXT)" },
+					},
+					rust = {
+						exec = "rustc",
+						args = { "$(FNAME)" },
+					},
+					java = {
+						exec = "javac",
+						args = { "$(FNAME)" },
+					},
+				},
+				view_output_diff = true,
 			})
 
 			vim.keymap.set("n", "<leader>ctr", [[:CompetiTest run<CR>]], { desc = "Compitest run" })

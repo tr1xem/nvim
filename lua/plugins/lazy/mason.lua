@@ -8,7 +8,6 @@ return {
 		"neovim/nvim-lspconfig",
 	},
 	config = function()
-		dofile(vim.g.base46_cache .. "mason")
 		local mason = require("mason")
 		local mason_lspconfig = require("mason-lspconfig")
 		local mason_tool_installer = require("mason-tool-installer")

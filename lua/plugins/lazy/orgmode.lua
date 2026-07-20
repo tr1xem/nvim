@@ -7,7 +7,6 @@ return {
 	{
 		"nvim-orgmode/orgmode",
 		dependencies = {
-			"akinsho/org-bullets.nvim",
 			"danilshvalov/org-modern.nvim",
 			"hamidi-dev/org-list.nvim",
 			"hugginsio/org-virtual-clocktime.nvim",
@@ -305,5 +304,23 @@ return {
 		-- 		require("org-roam-ui").open()
 		-- 	end, { desc = "open in org roam ui" })
 		-- end,
+	},
+	{
+		-- "akinsho/org-bullets.nvim",
+		dir = "~/work/nvim/org-bullets.nvim/",
+		config = function()
+			require("org-bullets").setup({
+				todo_conceal = {
+					enabled = true,
+				},
+			})
+		end,
+	},
+	{
+		"chipsenkbeil/org-mouse.nvim",
+		dependencies = { "nvim-orgmode/orgmode" },
+		config = function()
+			require("org-mouse").setup()
+		end,
 	},
 }

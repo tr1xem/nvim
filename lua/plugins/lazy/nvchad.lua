@@ -1,6 +1,6 @@
 return {
 	{
-		"GasparVardanyan/base46",
+		"NvChad/base46",
 		dependencies = {
 			"NvChad/ui",
 		},
@@ -36,7 +36,6 @@ return {
 	{
 		"nvim-tree/nvim-web-devicons",
 		opts = function()
-			dofile(vim.g.base46_cache .. "devicons")
 			return { override = require("nvchad.icons.devicons") }
 		end,
 	},
@@ -45,7 +44,6 @@ return {
 		keys = { "<leader>", "<c-w>", '"', "'", "`", "c", "v", "g" },
 		cmd = "WhichKey",
 		opts = function()
-			dofile(vim.g.base46_cache .. "whichkey")
 			return {}
 		end,
 	},
@@ -164,5 +162,14 @@ return {
 				},
 			})
 		end,
+	},
+	{ "nvzone/volt", lazy = true },
+	{
+		"nvzone/minty",
+		cmd = { "Shades", "Huefy" },
+	},
+	{
+		"nvzone/menu",
+		lazy = true,
 	},
 }

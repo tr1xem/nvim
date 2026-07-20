@@ -1,339 +1,353 @@
 return {
-	"neovim/nvim-lspconfig",
-	event = "User FilePost",
-	dependencies = {
-		"hrsh7th/cmp-nvim-lsp",
-		"p00f/clangd_extensions.nvim",
-	},
-	config = function()
-		-- NOTE: LSP Keybinds
+	{
+		"neovim/nvim-lspconfig",
+		event = "User FilePost",
+		dependencies = {
+			"hrsh7th/cmp-nvim-lsp",
+			"p00f/clangd_extensions.nvim",
+		},
+		config = function()
+			-- NOTE: LSP Keybinds
 
-		dofile(vim.g.base46_cache .. "lsp")
-		vim.diagnostic.config({
-			severity_sort = true,
-			float = { border = "rounded", source = "if_many" },
-			underline = { severity = vim.diagnostic.severity.ERROR },
-			signs = vim.g.have_nerd_font and {
-				text = {
-					[vim.diagnostic.severity.ERROR] = "󰅚 ",
-					[vim.diagnostic.severity.WARN] = "󰀪 ",
-					[vim.diagnostic.severity.INFO] = "󰋽 ",
-					[vim.diagnostic.severity.HINT] = "󰌶 ",
+			vim.diagnostic.config({
+				severity_sort = true,
+				float = { border = "rounded", source = "if_many" },
+				underline = { severity = vim.diagnostic.severity.ERROR },
+				signs = vim.g.have_nerd_font and {
+					text = {
+						[vim.diagnostic.severity.ERROR] = "󰅚 ",
+						[vim.diagnostic.severity.WARN] = "󰀪 ",
+						[vim.diagnostic.severity.INFO] = "󰋽 ",
+						[vim.diagnostic.severity.HINT] = "󰌶 ",
+					},
+				} or {},
+				virtual_text = {
+					source = "if_many",
+					spacing = 2,
+					format = function(diagnostic)
+						local diagnostic_message = {
+							[vim.diagnostic.severity.ERROR] = diagnostic.message,
+							[vim.diagnostic.severity.WARN] = diagnostic.message,
+							[vim.diagnostic.severity.INFO] = diagnostic.message,
+							[vim.diagnostic.severity.HINT] = diagnostic.message,
+						}
+						return diagnostic_message[diagnostic.severity]
+					end,
 				},
-			} or {},
-			virtual_text = {
-				source = "if_many",
-				spacing = 2,
-				format = function(diagnostic)
-					local diagnostic_message = {
-						[vim.diagnostic.severity.ERROR] = diagnostic.message,
-						[vim.diagnostic.severity.WARN] = diagnostic.message,
-						[vim.diagnostic.severity.INFO] = diagnostic.message,
-						[vim.diagnostic.severity.HINT] = diagnostic.message,
-					}
-					return diagnostic_message[diagnostic.severity]
+				virtual_lines = { current_line = true },
+			})
+
+			vim.api.nvim_create_autocmd("InsertEnter", {
+				pattern = "*",
+				callback = function()
+					vim.diagnostic.config({
+						virtual_text = false,
+					})
 				end,
-			},
-			virtual_lines = { current_line = true },
-		})
+			})
 
-		vim.api.nvim_create_autocmd("InsertEnter", {
-			pattern = "*",
-			callback = function()
-				vim.diagnostic.config({
-					virtual_text = false,
-				})
-			end,
-		})
+			vim.api.nvim_create_autocmd("InsertLeave", {
+				pattern = "*",
+				callback = function()
+					vim.diagnostic.config({
+						virtual_text = true,
+					})
+				end,
+			})
+			vim.api.nvim_create_autocmd("LspAttach", {
+				group = vim.api.nvim_create_augroup("UserLspConfig", {}),
+				callback = function(ev)
+					-- Buffer local mappings
+					local opts = { buffer = ev.buf, silent = true }
 
-		vim.api.nvim_create_autocmd("InsertLeave", {
-			pattern = "*",
-			callback = function()
-				vim.diagnostic.config({
-					virtual_text = true,
-				})
-			end,
-		})
-		vim.api.nvim_create_autocmd("LspAttach", {
-			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
-			callback = function(ev)
-				-- Buffer local mappings
-				local opts = { buffer = ev.buf, silent = true }
+					local client = vim.lsp.get_client_by_id(ev.data.client_id)
+					if client == nil then
+						return
+					end
 
-				local client = vim.lsp.get_client_by_id(ev.data.client_id)
-				if client == nil then
-					return
+					-- keymaps
+					opts.desc = "Show LSP references/dereferences"
+					vim.keymap.set("n", "<leader>vrr", "<cmd>Lspsaga finder def+ref<CR>", opts)
+					--
+					-- opts.desc = "Show LSP definitions"
+					-- vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
+
+					--             opts.desc = "Go to declaration"
+					-- vim.keymap.set("n", "gD", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
+
+					-- opts.desc = "Show LSP implementations
+					-- vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
+					--
+					-- opts.desc = "Show LSP type definitions"
+					-- vim.keymap.set("n", "gt", "<cmd>Lspsaga goto_type_definition<CR>", opts)
+
+					opts.desc = "See available code actions"
+					vim.keymap.set("n", "<leader>vca", "<cmd>Lspsaga code_action<CR>", opts)
+					-- vim.keymap.set({ "n", "v" }, "<leader>vca", vim.lsp.buf.code_action, opts)
+
+					opts.desc = "Smart rename"
+					vim.keymap.set("n", "<leader>vrn", "<cmd>Lspsaga rename<CR>", opts)
+
+					-- opts.desc = "Show buffer diagnostics"
+					-- vim.keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
+
+					-- opts.desc = "Show line diagnostics"
+					-- vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+					vim.keymap.set("n", "<leader>vd", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
+
+					opts.desc = "Show documentation for what is under cursor"
+					-- vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
+					vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
+					-- vim.keymap.set("n", "K", function()
+					-- 	-- local winid = require("ufo").peekFoldedLinesUnderCursor()
+					-- 	-- if not winid then
+					-- 	vim.cmd("Lspsaga hover_doc")
+					-- 	-- vim.lsp.buf.hover()
+					-- 	-- end
+					-- end, opts)
+					--
+					opts.desc = "Restart LSP"
+					vim.keymap.set("n", "<leader>rs", ":lsp restart<CR>", opts) -- mapping to restart lsp if necessary
+
+					opts.desc = "Jump to prev diagnostic"
+					vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
+
+					opts.desc = "Jump to next diagnostic"
+					vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
+				end,
+			})
+
+			vim.keymap.set(
+				"n",
+				"<leader>ch",
+				"<cmd>ClangdSwitchSourceHeader<cr>",
+				{ desc = "Switch Source/Header (C/C++)" }
+			)
+			local servers = {
+				csharp_ls = {},
+				hls = {},
+				elixirls = {},
+				tailwindcss = {},
+				cmake_language_server = {},
+				bashls = {},
+				perlnavigator = {},
+				hyprls = {},
+				gopls = {},
+				htmx = {},
+				lua_ls = {
+					settings = {
+						Lua = {
+							diagnostics = {
+								globals = { "vim" },
+							},
+							completion = {
+								callSnippet = "Replace",
+							},
+							workspace = {
+								library = {
+									[vim.fn.expand("$VIMRUNTIME/lua")] = true,
+									[vim.fn.stdpath("config") .. "/lua"] = true,
+								},
+							},
+						},
+					},
+				},
+
+				emmet_ls = {
+					filetypes = {
+						"html",
+						"typescriptreact",
+						"javascriptreact",
+						"css",
+						"sass",
+						"scss",
+						"less",
+						"svelte",
+					},
+				},
+				emmet_language_server = {
+					filetypes = {
+						"css",
+						"eruby",
+						"html",
+						"javascript",
+						"javascriptreact",
+						"less",
+						"sass",
+						"scss",
+						"pug",
+						"typescriptreact",
+					},
+					init_options = {
+						includeLanguages = {},
+						excludeLanguages = {},
+						extensionsPath = {},
+						preferences = {},
+						showAbbreviationSuggestions = true,
+						showExpandedAbbreviation = "always",
+						showSuggestionsAsSnippets = false,
+						syntaxProfiles = {},
+						variables = {},
+					},
+				},
+
+				denols = {
+					root_dir = vim.fs.dirname(vim.fs.find({ "deno.json", "deno.jsonc" }, { upward = true })[1]),
+				},
+				clangd = {
+					root_markers = {
+						"compile_commands.json",
+						"compile_flags.txt",
+						"configure.ac", -- AutoTools
+						"Makefile",
+						"configure.ac",
+						"configure.in",
+						"config.h.in",
+						"meson.build",
+						"meson_options.txt",
+						"build.ninja",
+						".git",
+					},
+					init_options = {
+						usePlaceholders = true,
+						completeUnimported = true,
+						clangdFileStatus = true,
+					},
+					cmd = {
+						"clangd",
+						"--background-index",
+						"--clang-tidy",
+						"--j=" .. (vim.fn.system({ "nproc" }) - 1),
+						"--header-insertion=iwyu",
+						"--completion-style=detailed",
+						"--function-arg-placeholders",
+						"--fallback-style=llvm",
+					},
+				},
+				basedpyright = {
+					settings = {
+						basedpyright = {
+							inlayHints = true,
+							disableOrganizeImports = true,
+							analysis = {
+								-- Ignore all files for analysis to exclusively use Ruff for linting
+								-- Enable diagnostics
+								-- ignore = { "*" },
+								typeCheckingMode = "basic",
+							},
+						},
+					},
+				},
+				ts_ls = {
+					root_dir = function(fname)
+						local util = require("lspconfig").util
+						return not util.root_pattern("deno.json", "deno.jsonc")(fname)
+							and util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git")(fname)
+					end,
+					single_file_support = false,
+					init_options = {
+						preferences = {
+							includeCompletionsWithSnippetText = true,
+							includeCompletionsForImportStatements = true,
+						},
+					},
+				},
+				pylsp = {
+					enabled = false,
+					settings = {
+						pylsp = {
+							signature = {
+								formatter = "ruff",
+							},
+							plugins = {
+								rope_autoimport = {
+									enabled = false,
+									-- 	memory = true,
+									completions = {
+										enabled = true,
+									},
+									code_actions = {
+										enabled = true,
+									},
+								},
+								-- pylsp_mypy = { enabled = true },
+								pylsp_ruff = { enabled = true },
+							},
+						},
+					},
+				},
+				pyright = {
+					enabled = false,
+					settings = {
+						pyright = {
+							inlayHints = true,
+							-- Using Ruff's import organizer
+							disableOrganizeImports = true,
+						},
+						python = {
+							analysis = {
+								ignore = { "*" },
+							},
+						},
+					},
+				},
+				qmlls = {
+					enabled = false,
+				},
+				dcm = {
+					enabled = true,
+				},
+			}
+
+			local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+			capabilities.textDocument.completion.completionItem = {
+				documentationFormat = { "markdown", "plaintext" },
+				snippetSupport = true,
+				preselectSupport = true,
+				insertReplaceSupport = true,
+				labelDetailsSupport = true,
+				deprecatedSupport = true,
+				commitCharactersSupport = true,
+				tagSupport = { valueSet = { 1 } },
+				resolveSupport = {
+					properties = {
+						"documentation",
+						"detail",
+						"additionalTextEdits",
+					},
+				},
+			}
+			capabilities.textDocument.foldingRange = {
+				dynamicRegistration = false,
+				lineFoldingOnly = true,
+			}
+
+			for name, opts in pairs(servers) do
+				opts.capabilities = capabilities
+				vim.lsp.config(name, opts)
+				if opts.enabled ~= false then
+					vim.lsp.enable(name)
 				end
-
-				-- keymaps
-				opts.desc = "Show LSP references/dereferences"
-				vim.keymap.set("n", "<leader>vrr", "<cmd>Lspsaga finder def+ref<CR>", opts)
-				--
-				-- opts.desc = "Show LSP definitions"
-				-- vim.keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
-
-				--             opts.desc = "Go to declaration"
-				-- vim.keymap.set("n", "gD", "<cmd>Telescope lsp_definitions<CR>", opts) -- show lsp definitions
-
-				-- opts.desc = "Show LSP implementations
-				-- vim.keymap.set("n", "gi", "<cmd>Telescope lsp_implementations<CR>", opts) -- show lsp implementations
-				--
-				-- opts.desc = "Show LSP type definitions"
-				-- vim.keymap.set("n", "gt", "<cmd>Lspsaga goto_type_definition<CR>", opts)
-
-				opts.desc = "See available code actions"
-				vim.keymap.set("n", "<leader>vca", "<cmd>Lspsaga code_action<CR>", opts)
-				-- vim.keymap.set({ "n", "v" }, "<leader>vca", vim.lsp.buf.code_action, opts)
-
-				opts.desc = "Smart rename"
-				vim.keymap.set("n", "<leader>vrn", "<cmd>Lspsaga rename<CR>", opts)
-
-				-- opts.desc = "Show buffer diagnostics"
-				-- vim.keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
-
-				-- opts.desc = "Show line diagnostics"
-				-- vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
-				-- vim.keymap.set("n", "<leader>vd", "<cmd>Lspsaga show_line_diagnostics<CR>", opts)
-
-				opts.desc = "Show documentation for what is under cursor"
-				-- vim.keymap.set("n", "K", vim.lsp.buf.hover, opts) -- show documentation for what is under cursor
-				vim.keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
-				-- vim.keymap.set("n", "K", function()
-				-- 	-- local winid = require("ufo").peekFoldedLinesUnderCursor()
-				-- 	-- if not winid then
-				-- 	vim.cmd("Lspsaga hover_doc")
-				-- 	-- vim.lsp.buf.hover()
-				-- 	-- end
-				-- end, opts)
-				--
-				opts.desc = "Restart LSP"
-				vim.keymap.set("n", "<leader>rs", ":lsp restart<CR>", opts) -- mapping to restart lsp if necessary
-
-				opts.desc = "Jump to prev diagnostic"
-				vim.keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)
-
-				opts.desc = "Jump to next diagnostic"
-				vim.keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)
-			end,
-		})
-
-		vim.keymap.set(
-			"n",
-			"<leader>ch",
-			"<cmd>ClangdSwitchSourceHeader<cr>",
-			{ desc = "Switch Source/Header (C/C++)" }
-		)
-		local servers = {
-			csharp_ls = {},
-			hls = {},
-			elixirls = {},
-			tailwindcss = {},
-			cmake_language_server = {},
-			bashls = {},
-			perlnavigator = {},
-			hyprls = {},
-			gopls = {},
-			htmx = {},
-			lua_ls = {
-				settings = {
-					Lua = {
-						diagnostics = {
-							globals = { "vim" },
-						},
-						completion = {
-							callSnippet = "Replace",
-						},
-						workspace = {
-							library = {
-								[vim.fn.expand("$VIMRUNTIME/lua")] = true,
-								[vim.fn.stdpath("config") .. "/lua"] = true,
-							},
-						},
-					},
-				},
-			},
-
-			emmet_ls = {
-				filetypes = {
-					"html",
-					"typescriptreact",
-					"javascriptreact",
-					"css",
-					"sass",
-					"scss",
-					"less",
-					"svelte",
-				},
-			},
-			emmet_language_server = {
-				filetypes = {
-					"css",
-					"eruby",
-					"html",
-					"javascript",
-					"javascriptreact",
-					"less",
-					"sass",
-					"scss",
-					"pug",
-					"typescriptreact",
-				},
-				init_options = {
-					includeLanguages = {},
-					excludeLanguages = {},
-					extensionsPath = {},
-					preferences = {},
-					showAbbreviationSuggestions = true,
-					showExpandedAbbreviation = "always",
-					showSuggestionsAsSnippets = false,
-					syntaxProfiles = {},
-					variables = {},
-				},
-			},
-
-			denols = {
-				root_dir = vim.fs.dirname(vim.fs.find({ "deno.json", "deno.jsonc" }, { upward = true })[1]),
-			},
-			clangd = {
-				root_markers = {
-					"compile_commands.json",
-					"compile_flags.txt",
-					"configure.ac", -- AutoTools
-					"Makefile",
-					"configure.ac",
-					"configure.in",
-					"config.h.in",
-					"meson.build",
-					"meson_options.txt",
-					"build.ninja",
-					".git",
-				},
-				init_options = {
-					usePlaceholders = true,
-					completeUnimported = true,
-					clangdFileStatus = true,
-				},
-				cmd = {
-					"clangd",
-					"--background-index",
-					"--clang-tidy",
-					"--j=" .. (vim.fn.system({ "nproc" }) - 1),
-					"--header-insertion=iwyu",
-					"--completion-style=detailed",
-					"--function-arg-placeholders",
-					"--fallback-style=llvm",
-				},
-			},
-			basedpyright = {
-				settings = {
-					basedpyright = {
-						inlayHints = true,
-						disableOrganizeImports = true,
-						analysis = {
-							-- Ignore all files for analysis to exclusively use Ruff for linting
-							-- Enable diagnostics
-							-- ignore = { "*" },
-							typeCheckingMode = "basic",
-						},
-					},
-				},
-			},
-			ts_ls = {
-				root_dir = function(fname)
-					local util = require("lspconfig").util
-					return not util.root_pattern("deno.json", "deno.jsonc")(fname)
-						and util.root_pattern("tsconfig.json", "package.json", "jsconfig.json", ".git")(fname)
-				end,
-				single_file_support = false,
-				init_options = {
-					preferences = {
-						includeCompletionsWithSnippetText = true,
-						includeCompletionsForImportStatements = true,
-					},
-				},
-			},
-			pylsp = {
-				enabled = false,
-				settings = {
-					pylsp = {
-						signature = {
-							formatter = "ruff",
-						},
-						plugins = {
-							rope_autoimport = {
-								enabled = false,
-								-- 	memory = true,
-								completions = {
-									enabled = true,
-								},
-								code_actions = {
-									enabled = true,
-								},
-							},
-							-- pylsp_mypy = { enabled = true },
-							pylsp_ruff = { enabled = true },
-						},
-					},
-				},
-			},
-			pyright = {
-				enabled = false,
-				settings = {
-					pyright = {
-						inlayHints = true,
-						-- Using Ruff's import organizer
-						disableOrganizeImports = true,
-					},
-					python = {
-						analysis = {
-							ignore = { "*" },
-						},
-					},
-				},
-			},
-			qmlls = {
-				enabled = false,
-			},
-			dcm = {
-				enabled = true,
-			},
-		}
-
-		local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-		capabilities.textDocument.completion.completionItem = {
-			documentationFormat = { "markdown", "plaintext" },
-			snippetSupport = true,
-			preselectSupport = true,
-			insertReplaceSupport = true,
-			labelDetailsSupport = true,
-			deprecatedSupport = true,
-			commitCharactersSupport = true,
-			tagSupport = { valueSet = { 1 } },
-			resolveSupport = {
-				properties = {
-					"documentation",
-					"detail",
-					"additionalTextEdits",
-				},
-			},
-		}
-		capabilities.textDocument.foldingRange = {
-			dynamicRegistration = false,
-			lineFoldingOnly = true,
-		}
-
-		for name, opts in pairs(servers) do
-			opts.capabilities = capabilities
-			vim.lsp.config(name, opts)
-			if opts.enabled ~= false then
-				vim.lsp.enable(name)
 			end
-		end
 
-		vim.lsp.inlay_hint.enable(true)
-		-- if you dont want to call the enable method in the loop, just pass a table.
-		-- vim.lsp.enable(vim.tbl_keys(servers))
-		-- vim.lsp.enable({"pyright", "clangd"})
-	end,
+			vim.lsp.inlay_hint.enable(true)
+			-- if you dont want to call the enable method in the loop, just pass a table.
+			-- vim.lsp.enable(vim.tbl_keys(servers))
+			-- vim.lsp.enable({"pyright", "clangd"})
+		end,
+	},
+	{
+		"nvimtools/none-ls.nvim",
+		dependencies = {
+			"GasparVardanyan/diactions.nvim",
+		},
+		config = function()
+			require("null-ls").setup({
+				sources = {
+					require("diactions.none-ls"),
+				},
+			})
+		end,
+	},
 }

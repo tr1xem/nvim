@@ -1,3 +1,5 @@
+// clang-format off
+// NOLINTBEGIN
 // Problem: $(PROBLEM)
 // Contest: $(CONTEST)
 // Judge: $(JUDGE)
@@ -6,8 +8,6 @@
 // Time Limit: $(TIMELIM)
 // Start: $(DATE)
 
-// clang-format off
-// NOLINTBEGIN
 #include <bits/stdc++.h>
 using namespace std;
 #define fastio() ios_base::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
@@ -31,10 +31,12 @@ typedef unsigned long long ull;
 typedef long double lld;
 // typedef tree<pair<int, int>, null_type, less<pair<int, int>>, rb_tree_tag, tree_order_statistics_node_update > pbds; // find_by_order, order_of_key
 
-#ifndef ONLINE_JUDGE
-#define debug(x) cerr << "Line(" << __LINE__ << ") -> " <<  #x <<" "; _print(x); cerr << endl;
-#else
+#ifndef LOCAL
+void setIO(string s) { freopen((s + ".in").c_str(), "r", stdin); freopen((s + ".out").c_str(), "w", stdout); }
 #define debug(x)
+#else
+#define debug(x) cerr << "Line(" << __LINE__ << ") -> " <<  #x <<" "; _print(x); cerr << endl;
+void setIO(string s) {}
 #endif
 
 void _print(ll t) {cerr << t;}
@@ -55,12 +57,10 @@ template <class T> void _print(vector <T> v) {cerr << "[ "; for (T i : v) {_prin
 template <class T> void _print(set <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T> void _print(multiset <T> v) {cerr << "[ "; for (T i : v) {_print(i); cerr << " ";} cerr << "]";}
 template <class T, class V> void _print(map <T, V> v) {cerr << "[ "; for (auto i : v) {_print(i); cerr << " ";} cerr << "]";}
-
-void setIO(string s) { freopen((s + ".in").c_str(), "r", stdin); freopen((s + ".out").c_str(), "w", stdout); }
 // NOLINTEND NOLINTBEGIN(readability-braces-around-statements,readability-isolate-declaration,readability-implicit-bool-conversion)
 // clang-format on
 
-int main() {
+signed main() {
     fastio();
 
     return 0;
