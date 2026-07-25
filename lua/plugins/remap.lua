@@ -126,3 +126,5 @@ map({ "n", "v" }, "<RightMouse>", function()
 
 	require("menu").open(options, { mouse = true })
 end, {})
+-- Key mappings
+vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")

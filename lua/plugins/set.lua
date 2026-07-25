@@ -32,7 +32,7 @@ vim.g.netrw_browse_split = 0
 vim.g.netrw_banner = 0
 vim.g.netrw_winsize = 25
 vim.opt.showmode = false
-vim.opt.ignorecase = false
+vim.opt.ignorecase = true
 -- vim.diagnostic.config({
 -- 	virtual_text = true,
 -- })
@@ -62,3 +62,4 @@ vim.opt.fillchars = {
 vim.opt.conceallevel = 2
 vim.opt.concealcursor = "nc"
 vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"

@@ -89,19 +89,46 @@ return {
 					end, { "i", "s" }),
 				},
 
-				sources = {
-					{ name = "luasnip", priority = 100 },
-					{ name = "nvim_lsp", priority = 90 },
-					{ name = "supermaven", priority = 85 },
-					{ name = "nvim_lua", priority = 85 },
-					{ name = "orgmode", priority = 80 },
-					{ name = "org_roam", priority = 100 },
-					-- { name = "neorg", priority = 70 },
-					{ name = "async_path", priority = 60 },
-					{ name = "buffer", priority = 40 },
-				},
+				-- sources = {
+				-- 	{ name = "luasnip", priority = 100 },
+				-- 	{ name = "nvim_lsp", priority = 90 },
+				-- 	{ name = "supermaven", priority = 85 },
+				-- 	{ name = "nvim_lua", priority = 85 },
+				-- 	{ name = "orgmode", priority = 80 },
+				-- 	{ name = "org_roam", priority = 100 },
+				-- 	-- { name = "neorg", priority = 70 },
+				-- 	{ name = "async_path", priority = 60 },
+				-- 	{ name = "buffer", priority = 40 },
+				-- },
 			}
 			cmp.setup(vim.tbl_deep_extend("force", options, require("nvchad.cmp")))
+
+			local default_sources = {
+				{ name = "luasnip", priority = 100 },
+				{ name = "nvim_lsp", priority = 100 },
+				-- { name = "nvim_lua", priority = 90 },
+				{ name = "async_path", priority = 65 },
+				{ name = "supermaven", priority = 60 },
+				{ name = "buffer", priority = 40 },
+			}
+
+			cmp.setup({
+				sources = default_sources,
+			})
+			local org_sources = {
+				{ name = "orgmode", priority = 100 },
+				{ name = "org_roam", priority = 100 },
+			}
+			cmp.setup.filetype("org", {
+				sources = vim.list_extend(vim.deepcopy(org_sources), default_sources),
+			})
+
+			local norg_sources = {
+				{ name = "neorg", priority = 100 },
+			}
+			cmp.setup.filetype("norg", {
+				sources = vim.list_extend(vim.deepcopy(norg_sources), default_sources),
+			})
 		end,
 	},
 }
