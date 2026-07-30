@@ -128,3 +128,6 @@ map({ "n", "v" }, "<RightMouse>", function()
 end, {})
 -- Key mappings
 vim.keymap.set("n", "<space><space>x", "<cmd>source %<CR>")
+vim.keymap.set("n", "<leader>gs", function()
+	require("neogit").open({ kind = "split_above_all" })
+end, { desc = "Open Neogit UI" })

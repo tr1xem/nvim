@@ -141,9 +141,22 @@ return {
 				gopls = {},
 				htmx = {},
 				serve_d = {
+					rootPatterns = { "dub.json", "dub.sdl" },
+					filetypes = { "d", "dml" },
 					settings = {
 						dfmt = {
 							braceStyle = "stroustrup",
+						},
+						d = {
+							lintOnFileOpen = "always",
+							enableStaticLinting = true,
+							dietContextCompletion = true,
+							enableSDLLinting = true,
+							enableAutoComplete = true,
+							enableDMDImportTiming = true,
+							argumentSnippets = true,
+							enableAutoComplete = true,
+							enableFormatting = true,
 						},
 					},
 				},

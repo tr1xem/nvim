@@ -63,3 +63,4 @@ vim.opt.conceallevel = 2
 vim.opt.concealcursor = "nc"
 vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
 vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+vim.o.autochdir = true -- Change PWD to opend file dir
